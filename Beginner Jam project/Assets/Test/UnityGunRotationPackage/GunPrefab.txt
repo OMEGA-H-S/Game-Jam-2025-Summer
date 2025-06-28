@@ -1,0 +1,1 @@
+This represents the Gun object with a placeholder sprite.
