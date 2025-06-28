@@ -1,0 +1,1 @@
+This represents the Unity Scene with Camera at (0,0,-10) and hierarchy Player > Pivot > Gun.
