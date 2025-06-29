@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class SecurityMovement : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class SecurityMovement : MonoBehaviour
     [SerializeField] private float targetDistance = 8f;
 
     [SerializeField] private Transform gunPivot;
+
+    [SerializeField] private GameObject grenadePrefab;
+
+    private bool isAttacking = false;
 
     void Start()
     {
@@ -60,7 +65,9 @@ public class SecurityMovement : MonoBehaviour
                 if(Vector2.Distance(this.transform.position, player.position) < targetDistance)
                 {
                     currMoveState = MovementState.Following;
+                    playerFound();
                     gunPivot.gameObject.SetActive(true);
+                    rb.velocity = Vector2.zero;
                 }
                 break;
 
@@ -68,21 +75,52 @@ public class SecurityMovement : MonoBehaviour
                 Debug.Log("Player found...Attack!");
                 if (Vector2.Distance(this.transform.position, player.position) > targetDistance)
                 {
+                    gunPivot.gameObject.SetActive(false);
+                    isAtLocation = true;
                     currMoveState = MovementState.Idle;
                 }
                 //Move one unit towards player
-                attack();
+                playerFound();
+                if(!isAttacking)
+                {
+                    attack();
+                    isAttacking = true;
+                }
+                
                 break;
 
         }
-
-
         //Part 2: Check if player is within vicinity
         //If so, check if player is within the angle chosen to be the enemy's field of view
         //If both are true, change states and follow the player
         //At each fixedupdate, the velocity of the enemy should be in the direction of the player. 
         //If the player is no longer visible, the enemy should head to the spot at which the player was last seen
         //If the player is still not within the line of sight, then go back to idle movement, with the new center being that point
+    }
+    private void playerFound()
+    {
+
+        if (player.transform.position.x < this.transform.position.x && transform.localScale.x > 0)
+        {
+            Debug.Log("Here1");
+            //Face left
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            
+
+        }
+        else if(player.transform.position.x > this.transform.position.x && transform.localScale.x < 0)
+        {
+            Debug.Log("Here2");
+            //Face right
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+           
+        }
+
+        if (gunPivot.gameObject.activeInHierarchy)
+        {
+            gunPivot.GetComponentInChildren<SecurityGunController>().adjustGunComparison();
+        }
+
     }
 
     private Vector3 GetRandomLocation()
@@ -101,7 +139,7 @@ public class SecurityMovement : MonoBehaviour
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             if (gunPivot.gameObject.activeInHierarchy)
             {
-                gunPivot.GetComponentInChildren<SecurityGunController>().enemySwitchedDirection();
+                //gunPivot.GetComponentInChildren<SecurityGunController>().enemySwitchedDirection();
             }
 
         }
@@ -110,7 +148,7 @@ public class SecurityMovement : MonoBehaviour
             //Face right
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             if (gunPivot.gameObject.activeInHierarchy) { 
-                gunPivot.GetComponentInChildren<SecurityGunController>().enemySwitchedDirection();
+                //gunPivot.GetComponentInChildren<SecurityGunController>().enemySwitchedDirection();
             }
         }
         Vector3 direction = (location - transform.position).normalized;
@@ -137,6 +175,7 @@ public class SecurityMovement : MonoBehaviour
 
     private void attack()
     {
+        StartCoroutine(grenadeAttack());
         //mechanics for attack: 
         //Attack 1: Shoot at player
         //Attack 2: Throw a grenade
@@ -150,4 +189,16 @@ public class SecurityMovement : MonoBehaviour
         Vector3 playerPos = player.position;
 
     }
+
+    private IEnumerator grenadeAttack()
+    {
+        GameObject grenade = Instantiate(grenadePrefab, transform.position, transform.rotation);
+        //grenade.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 5, 0);
+        grenade.GetComponent<GrenadeController>().AimAtPlayer();
+
+        yield return new WaitForSeconds(2);
+        isAttacking = false;
+    }
+
+
 }

@@ -10,6 +10,7 @@ public class SecurityGunController : MonoBehaviour
     private Transform player;
     private Vector2 comparison;
     private bool invertLaser;
+
     private void Start()
     {
         pivot = transform.parent;
@@ -26,8 +27,6 @@ public class SecurityGunController : MonoBehaviour
 
     private void aimAtPlayer()
     {
-
-
         Vector3 direction = player.position - pivot.position;
         //Vector3 v3 = v2 - v1;
 
@@ -42,6 +41,7 @@ public class SecurityGunController : MonoBehaviour
         */
 
         float angle = Vector2.SignedAngle(comparison, direction);
+        Debug.Log("Comparison: " + comparison);
         //Debug.Log(angle);
 
         pivot.eulerAngles = new Vector3(0, 0, angle);
@@ -87,14 +87,18 @@ public class SecurityGunController : MonoBehaviour
 
     }
 
-    public void enemySwitchedDirection()
+    public void adjustGunComparison()
     {
+        //true represents left, false represnts right
         //Debug.Log("Method called");
         //pivot.transform.localScale = new Vector3(-pivot.localScale.x, -pivot.localScale.y, pivot.localScale.z);
 
         //offset = (offset == 0) ? 180 : 0;
-        //Debug.Log(offset);.
-        comparison = comparison == Vector2.right ? Vector2.left : Vector2.right;
-        invertLaser = !invertLaser;
+        //Debug.Log(offset);
+        comparison = pivot.position.x > player.position.x ? Vector2.left : Vector2.right;
+        //comparison = direction ? Vector2.left : Vector2.right;
+        //invertLaser = !invertLaser;
     }
+
+    
 }

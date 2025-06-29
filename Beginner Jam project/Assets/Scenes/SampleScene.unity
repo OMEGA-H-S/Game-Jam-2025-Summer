@@ -228,7 +228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2038446309260770888, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9636305
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2038446309260770888, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -240,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2038446309260770888, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.26723844
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2038446309260770888, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -252,11 +252,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2038446309260770888, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -31
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3790904996659232195, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
       propertyPath: m_Name
       value: Gun Pivot
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790904996659232195, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5674865734999287330, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
@@ -540,7 +544,7 @@ Transform:
   m_GameObject: {fileID: 567925000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.69, y: -2.83, z: 0}
+  m_LocalPosition: {x: 0.02, y: 0.2, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -563,6 +567,8 @@ MonoBehaviour:
   radius: 7
   idleMovementCooldown: 0.2
   targetDistance: 17.1
+  gunPivot: {fileID: 239242021}
+  grenadePrefab: {fileID: 8687244983562240400, guid: 7e2b61323acc5054dbe66f557b3f25e3, type: 3}
 --- !u!1 &672001915
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,7 +784,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2602046735412831623, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.86
+      value: -18.69
       objectReference: {fileID: 0}
     - target: {fileID: 2602046735412831623, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: m_LocalPosition.y
