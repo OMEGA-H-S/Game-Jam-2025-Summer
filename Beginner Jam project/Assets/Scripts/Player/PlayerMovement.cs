@@ -11,9 +11,16 @@ public class PlayerMovement : MonoBehaviour
     private bool pendingJump = false;
     [SerializeField] private LayerMask groundLayer;
 
+    [SerializeField] private Vector2 crouchOffset, standingOffset;
+    [SerializeField] private Vector2 crouchSize, standingSize;
+    private BoxCollider2D collider;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        collider = GetComponent<BoxCollider2D>();
+        standingOffset = collider.offset;
+        standingSize = collider.size;
     }
 
     private void Update()
@@ -46,6 +53,23 @@ public class PlayerMovement : MonoBehaviour
             pendingJump = true;
         }
 
+        /*
+        //Logic for crouching: player cannot shoot while crouching
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            this.transform.Rotate(new Vector3(0, 0, 90) * transform.localScale.x / Mathf.Abs(transform.localScale.x));
+            Debug.Log("Transform rotation: " + transform.eulerAngles.z);
+            Debug.Log("Rigidbody rotation: " + body.rotation);
+        }
+        
+        if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            this.transform.Rotate(new Vector3(0, 0, 90) * transform.localScale.x / Mathf.Abs(transform.localScale.x));
+            gunPivot.SetActive(true);
+        }
+        */
+        crouch();
+
     }
 
     private void FixedUpdate()
@@ -70,6 +94,25 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D cast = Physics2D.BoxCast(collider.bounds.center, collider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
 
         return cast.collider != null;
+    }
+
+    private void crouch()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            collider.size = this.crouchSize;
+            collider.offset = this.crouchOffset;
+            gunPivot.SetActive(false);
+        }
+
+        //Add crouching animatino
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            collider.size = this.standingSize;
+            collider.offset = this.standingOffset;
+            gunPivot.SetActive(true);
+        }
     }
 
 
