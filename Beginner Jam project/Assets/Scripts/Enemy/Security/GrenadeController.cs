@@ -26,9 +26,16 @@ public class GrenadeController : MonoBehaviour
         float distance = Vector3.Distance(player.position, transform.position);
         if(player.position.x < transform.position.x)
         {
-            rb.velocity = new Vector3(-distance * Random.Range(throwStrength - 0.3f, throwStrength + 0.5f), 
-                grenadeHeight * Random.Range(throwStrength - 0.3f, throwStrength + 0.3f));
+            rb.velocity = new Vector2(Random.Range(-distance * throwStrength * 0.9f, -distance * throwStrength * 1.1f), 
+                grenadeHeight);
         }
+        else
+        {
+            rb.velocity = new Vector2(Random.Range(distance * throwStrength * 0.9f, distance * throwStrength * 1.1f),
+                grenadeHeight);
+        }
+
+        Debug.Log(rb.velocity);
 
     }
 

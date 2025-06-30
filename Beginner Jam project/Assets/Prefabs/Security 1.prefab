@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3502038941015258501}
   m_Layer: 0
   m_Name: Security 1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 1435214786956649124}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 8eac2718caaaadb4d883df1cd16b2a2f, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -138,7 +138,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5.49
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -171,7 +171,14 @@ MonoBehaviour:
   bulletLayer:
     serializedVersion: 2
     m_Bits: 256
-  jumpHeight: 5
+  jumpHeight: 17
+  dodgeRange: 10
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  dodgeFreq: 0.3
+  attackDelay: 1
+  guardDifficulty: 0
 --- !u!1001 &2947434327044655221
 PrefabInstance:
   m_ObjectHideFlags: 0

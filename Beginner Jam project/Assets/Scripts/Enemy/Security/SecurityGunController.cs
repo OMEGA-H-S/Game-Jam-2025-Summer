@@ -107,7 +107,7 @@ public class SecurityGunController : MonoBehaviour
         float angle = pivot.eulerAngles.z;
         if (transform.parent.parent.localScale.x < 0)
         {
-            Debug.Log("Laser is inverted");
+            //Debug.Log("Laser is inverted");
             angle += 180;
             angle = normalizedAngle(angle);
         }

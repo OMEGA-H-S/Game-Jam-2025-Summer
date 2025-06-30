@@ -34,6 +34,21 @@ public class SecurityMovement : MonoBehaviour
     [SerializeField] private float jumpHeight = 5.0f;
 
     [SerializeField] private float dodgeRange = 10f;
+    [SerializeField] private LayerMask groundLayer;
+
+    [SerializeField] [Range(0, 1)] private float dodgeFreq = 0.3f;
+    [SerializeField] private float attackDelay = 1f;
+
+    private enum Difficulty
+    {
+        Easy, 
+        Medium, 
+        Hard
+    };
+
+    [SerializeField] Difficulty guardDifficulty;
+
+
 
     void Start()
     {
@@ -43,12 +58,42 @@ public class SecurityMovement : MonoBehaviour
         gunPivot.gameObject.SetActive(false);
         collider = GetComponent<Collider2D>();
 
+        if(guardDifficulty == Difficulty.Easy)
+        {
+            radius = 4f;
+            targetDistance = 16;
+            speed = 2f;
+            jumpHeight = 10f;
+            dodgeFreq = 0.25f;
+            attackDelay = 1.2f;
+        }
+        if(guardDifficulty == Difficulty.Medium)
+        {
+            this.radius = 7f;
+            targetDistance = 18f;
+            speed = 4.92f;
+            jumpHeight = 18f;
+            dodgeFreq = 0.45f;
+            attackDelay = 1f;
+
+        }
+        else if (guardDifficulty == Difficulty.Hard)
+        {
+            this.radius = 10f;
+            targetDistance = 22f;
+            speed = 6f;
+            jumpHeight = 22f;
+            dodgeFreq = 0.85f;
+            attackDelay = 0.8f;
+
+        }
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log(currMoveState);
+        //Debug.Log(currMoveState);
         //Part 1: Idle
         switch (currMoveState)
         {
@@ -56,7 +101,7 @@ public class SecurityMovement : MonoBehaviour
 
                 if (isAtLocation)
                 {
-                    Debug.Log("Running this part of the code now");
+                    //Debug.Log("Running this part of the code now");
                     if (cooldownTime >= idleMovementCooldown)
                     {
 
@@ -75,16 +120,19 @@ public class SecurityMovement : MonoBehaviour
                 if(Vector2.Distance(this.transform.position, player.position) < targetDistance)
                 {
                     currMoveState = MovementState.Following;
+                    isAttacking = false;
                     playerFound();
                     gunPivot.gameObject.SetActive(true);
                     rb.velocity = Vector2.zero;
+                    //Debug.Log("I see the player, so i set my velocity to " + rb.velocity);
                 }
                 break;
 
             case MovementState.Following:
                 //Debug.Log("Player found...Attack!");
-                Debug.Log("Here");
-                if (Vector2.Distance(this.transform.position, player.position) > targetDistance)
+                //Debug.Log("Here");
+                //Debug.Log("Check velocity here: " + rb.velocity);
+                if (Vector2.Distance(this.transform.position, player.position) > targetDistance && !isAttacking && isGrounded())
                 {
                     
                     gunPivot.gameObject.SetActive(false);
@@ -94,13 +142,13 @@ public class SecurityMovement : MonoBehaviour
                 }
                 //Move one unit towards player
                 playerFound();
-                if(!isAttacking)
+                if(!isAttacking && currMoveState == MovementState.Following)
                 {
-                    Debug.Log("Attacking now");
+                    //Debug.Log("Attacking now");
                     attack();
                     isAttacking = true;
                 }
-                dodgeAttack();
+                
                 break;
 
         }
@@ -174,20 +222,22 @@ public class SecurityMovement : MonoBehaviour
             }
         }
         Vector3 direction = (location - transform.position).normalized;
+
         rb.velocity = direction * speed;
         //Keep going until we are at the position
-        StartCoroutine(MoveTillComplete(location));
+        StartCoroutine(MoveTillComplete(location, direction));
     }
 
-    private IEnumerator MoveTillComplete(Vector3 location)
+    private IEnumerator MoveTillComplete(Vector3 location, Vector3 direction)
     {
         Vector3 distance = location - transform.position;
-        while (distance.magnitude > 0.5f)
+        while (distance.magnitude > 0.5f && currMoveState == MovementState.Idle)
         {
+            rb.velocity = direction * speed;
             yield return new WaitForFixedUpdate();
             Vector3 rbPos = rb.position;
             distance = location - rbPos;
-            Debug.Log("Still here " + rb.velocity);
+            //Debug.Log("Still here " + rb.velocity);
         }
         isAtLocation = true;
         cooldownTime = 0;
@@ -198,6 +248,28 @@ public class SecurityMovement : MonoBehaviour
 
     private void attack()
     {
+        Debug.Log("Looks like im attacking again");
+        if(Random.Range(0f, 1f) < dodgeFreq)
+        {
+            dodgeAttack();
+            Debug.Log("Dodging Attack");
+        }
+        float whichAttack = Random.Range(0f, 1f);
+        if(whichAttack <= 0.85f)
+        {
+            StartCoroutine(shootAttack());
+            Debug.Log("Shooting");
+        }
+        else if(whichAttack < 0.95f)
+        {
+            StartCoroutine(grenadeAttack());
+            Debug.Log("Throwing grenade");
+        }
+        else
+        {
+            StartCoroutine(chargeAttack());
+            Debug.Log("Charging");
+        }
         //chargeAttack();
         //StartCoroutine(chargeAttack());
         //mechanics for attack: 
@@ -206,7 +278,7 @@ public class SecurityMovement : MonoBehaviour
         //Detect opponent attacks, jump up 50% of the time
         //Attack 3: Tackle (Run at opponent, can still be damaged but can only be stopped by dodging
         //Inform other nearby security guards
-        StartCoroutine(shootAttack());
+        
     }
 
     private IEnumerator shootAttack()
@@ -217,7 +289,7 @@ public class SecurityMovement : MonoBehaviour
 
         Debug.Log("Shooting");
         gunPivot.GetComponentInChildren<SecurityGunController>().SpawnLaser();
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f * attackDelay);
         isAttacking = false;
 
     }
@@ -225,11 +297,11 @@ public class SecurityMovement : MonoBehaviour
     private IEnumerator grenadeAttack()
     {
         gunPivot.gameObject.SetActive(false);
-        GameObject grenade = Instantiate(grenadePrefab, transform.position, transform.rotation);
+        GameObject grenade = Instantiate(grenadePrefab, transform.position + (Vector3)Vector2.up * 2, transform.rotation);
         //grenade.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 5, 0);
         grenade.GetComponent<GrenadeController>().AimAtPlayer();
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3 * attackDelay);
         isAttacking = false;
         gunPivot.gameObject.SetActive(true);
     }
@@ -241,11 +313,12 @@ public class SecurityMovement : MonoBehaviour
         gunPivot.gameObject.SetActive(false);
         float distance = player.position.x - transform.position.x;
         Vector2 target = new Vector2(distance * 2 + transform.position.x, transform.position.y);    //Go to the same distance, but on the other side of the player
-        //Debug.Log(target);
+        //Debug.Log("Target: " + target);
 
         bool doneChargeAttack = false;
         Vector2 moveIncrement = target.x < transform.position.x ? Vector2.left : Vector2.right;
-        
+        float abortTime = 0f;
+
         while (!doneChargeAttack)
         {
             transform.position = transform.position + (Vector3)moveIncrement * Time.deltaTime * speed * 2;
@@ -264,6 +337,23 @@ public class SecurityMovement : MonoBehaviour
                 doneChargeAttack = true;
 
             }
+            abortTime += Time.deltaTime;
+            if(abortTime > 3f)
+            {
+                doneChargeAttack = true;
+            }
+
+            /*
+
+            RaycastHit2D checkForWalls = Physics2D.BoxCast(collider.bounds.center,
+                new Vector2(collider.bounds.size.x * 1.25f, collider.bounds.extents.y),
+                0, Vector2.zero, 0f);
+            if (checkForWalls.collider != null && checkForWalls.collider.tag != "Player" && checkForWalls.collider.tag != "Enemy");
+            {
+                //This means something is blocking it, so just end the loop
+                doneChargeAttack = true;
+            }
+            */
 
             yield return null;
 
@@ -291,11 +381,11 @@ public class SecurityMovement : MonoBehaviour
         //yield return new WaitForSeconds(2);
 
         Debug.Log("Charge attack finished");
+        yield return new WaitForSeconds(2 * attackDelay);
         isAttacking = false;
         gunPivot.gameObject.SetActive(true);
         //Add a little cooldown
-        yield return new WaitForSeconds(1);
-
+        
     }
 
     private void dodgeAttack()
@@ -310,8 +400,18 @@ public class SecurityMovement : MonoBehaviour
             if(playerBullet.collider.gameObject.GetComponent<LaserController>().getOwner() == LaserController.Owner.Player)
             {
                 rb.velocity = Vector2.up * jumpHeight;
+                //Debug.Log("Velocity after jumping: " + rb.velocity);
             }
         }
+    }
+
+    private bool isGrounded()
+    {
+        //Add logic to determine when player is grounded
+        Collider2D collider = GetComponent<Collider2D>();
+        RaycastHit2D cast = Physics2D.BoxCast(collider.bounds.center, collider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        //Debug.Log(cast.collider.gameObject.layer + " " + LayerMask.NameToLayer("Ground"));
+        return cast.collider != null;
     }
 
 

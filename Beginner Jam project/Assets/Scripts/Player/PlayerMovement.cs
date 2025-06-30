@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dir = new Vector3(input * speed, jump, 0) * Time.deltaTime;
         transform.Translate(dir);
         */
-        Debug.Log(gunPivot);
+        //Debug.Log(gunPivot);
 
         if (input < -0.1f && this.transform.localScale.x > 0)
         {

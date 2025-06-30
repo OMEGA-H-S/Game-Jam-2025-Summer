@@ -6,6 +6,7 @@ public class LaserController : MonoBehaviour
 {
     [SerializeField] private float speed;   //Should be very high
     [SerializeField] private float lifetime;
+    private Vector2 startPos;
     public enum Owner
     {
         Player, 
@@ -14,12 +15,14 @@ public class LaserController : MonoBehaviour
     private Owner bulletOwner;
 
     private float timeInAir;
+
+
     private void Update()
     {
         transform.localPosition = new Vector3(transform.localPosition.x + speed * Time.deltaTime, transform.localPosition.y, transform.localPosition.z);
-        timeInAir += Time.deltaTime;
+        
 
-        if (timeInAir > lifetime)
+        if (Mathf.Abs(transform.localPosition.x) > 20)
         {
             Destroy(transform.parent.gameObject);
         }
