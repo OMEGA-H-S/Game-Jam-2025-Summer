@@ -11,12 +11,14 @@ public class SecurityGunController : MonoBehaviour
     private Vector2 comparison;
     private bool invertLaser;
 
+    [SerializeField] private GameObject laser;
+
     private void Start()
     {
         pivot = transform.parent;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         comparison = Vector2.right;
-        invertLaser = false;
+        invertLaser = true;
         
     }
 
@@ -41,7 +43,7 @@ public class SecurityGunController : MonoBehaviour
         */
 
         float angle = Vector2.SignedAngle(comparison, direction);
-        Debug.Log("Comparison: " + comparison);
+        //Debug.Log("Comparison: " + comparison);
         //Debug.Log(angle);
 
         pivot.eulerAngles = new Vector3(0, 0, angle);
@@ -100,5 +102,29 @@ public class SecurityGunController : MonoBehaviour
         //invertLaser = !invertLaser;
     }
 
-    
+    public void SpawnLaser()
+    {
+        float angle = pivot.eulerAngles.z;
+        if (transform.parent.parent.localScale.x < 0)
+        {
+            Debug.Log("Laser is inverted");
+            angle += 180;
+            angle = normalizedAngle(angle);
+        }
+        GameObject bullet = Instantiate(laser, transform.position, Quaternion.Euler(new Vector3(0, 0, angle)));
+
+        bullet.GetComponentInChildren<LaserController>().setBulletOwner(LaserController.Owner.Enemy);
+    }
+
+    public void enemySwitchedDirection()
+    {
+        //Debug.Log("Method called");
+        //pivot.transform.localScale = new Vector3(-pivot.localScale.x, -pivot.localScale.y, pivot.localScale.z);
+
+        //offset = (offset == 0) ? 180 : 0;
+        //Debug.Log(offset);.
+        
+        invertLaser = !invertLaser;
+    }
+
 }

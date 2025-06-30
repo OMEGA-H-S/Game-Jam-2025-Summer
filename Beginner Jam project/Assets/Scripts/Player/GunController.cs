@@ -116,7 +116,7 @@ public class GunController : MonoBehaviour
             angle += 180;
             angle = normalizedAngle(angle);
         }
-        Instantiate(laser, transform.position, Quaternion.Euler(new Vector3(0, 0, angle)));
+        Instantiate(laser, transform.position, Quaternion.Euler(new Vector3(0, 0, angle))).GetComponentInChildren<LaserController>().setBulletOwner(LaserController.Owner.Player);
     }
 
     protected float normalizedAngle(float angle)

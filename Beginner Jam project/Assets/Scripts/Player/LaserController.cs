@@ -6,6 +6,13 @@ public class LaserController : MonoBehaviour
 {
     [SerializeField] private float speed;   //Should be very high
     [SerializeField] private float lifetime;
+    public enum Owner
+    {
+        Player, 
+        Enemy
+    };
+    private Owner bulletOwner;
+
     private float timeInAir;
     private void Update()
     {
@@ -17,5 +24,15 @@ public class LaserController : MonoBehaviour
             Destroy(transform.parent.gameObject);
         }
 
+    }
+
+    public void setBulletOwner(Owner val)
+    {
+        this.bulletOwner = val;
+    }
+
+    public Owner getOwner()
+    {
+        return this.bulletOwner;
     }
 }

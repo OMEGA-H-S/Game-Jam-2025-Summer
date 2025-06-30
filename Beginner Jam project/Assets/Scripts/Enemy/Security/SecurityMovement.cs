@@ -25,8 +25,15 @@ public class SecurityMovement : MonoBehaviour
     [SerializeField] private Transform gunPivot;
 
     [SerializeField] private GameObject grenadePrefab;
+    private Collider2D collider;
+
+    [SerializeField] private LayerMask bulletLayer;
 
     private bool isAttacking = false;
+
+    [SerializeField] private float jumpHeight = 5.0f;
+
+    [SerializeField] private float dodgeRange = 10f;
 
     void Start()
     {
@@ -34,12 +41,14 @@ public class SecurityMovement : MonoBehaviour
         centerLocation = this.transform.position;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         gunPivot.gameObject.SetActive(false);
+        collider = GetComponent<Collider2D>();
 
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        Debug.Log(currMoveState);
         //Part 1: Idle
         switch (currMoveState)
         {
@@ -47,6 +56,7 @@ public class SecurityMovement : MonoBehaviour
 
                 if (isAtLocation)
                 {
+                    Debug.Log("Running this part of the code now");
                     if (cooldownTime >= idleMovementCooldown)
                     {
 
@@ -58,7 +68,7 @@ public class SecurityMovement : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Here");
+                        //Debug.Log("Here");
                         cooldownTime += Time.deltaTime;
                     }
                 }
@@ -72,21 +82,25 @@ public class SecurityMovement : MonoBehaviour
                 break;
 
             case MovementState.Following:
-                Debug.Log("Player found...Attack!");
+                //Debug.Log("Player found...Attack!");
+                Debug.Log("Here");
                 if (Vector2.Distance(this.transform.position, player.position) > targetDistance)
                 {
+                    
                     gunPivot.gameObject.SetActive(false);
                     isAtLocation = true;
+                    cooldownTime = 0;   //Reset the cooldown time in case the enemy was in the middle of a cooldown when it saw the player
                     currMoveState = MovementState.Idle;
                 }
                 //Move one unit towards player
                 playerFound();
                 if(!isAttacking)
                 {
+                    Debug.Log("Attacking now");
                     attack();
                     isAttacking = true;
                 }
-                
+                dodgeAttack();
                 break;
 
         }
@@ -102,18 +116,26 @@ public class SecurityMovement : MonoBehaviour
 
         if (player.transform.position.x < this.transform.position.x && transform.localScale.x > 0)
         {
-            Debug.Log("Here1");
+            //Debug.Log("Here1");
             //Face left
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            
+            if (gunPivot.gameObject.activeInHierarchy)
+            {
+                gunPivot.GetComponentInChildren<SecurityGunController>().enemySwitchedDirection();
+            }
+
 
         }
         else if(player.transform.position.x > this.transform.position.x && transform.localScale.x < 0)
         {
-            Debug.Log("Here2");
+            //Debug.Log("Here2");
             //Face right
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-           
+            if (gunPivot.gameObject.activeInHierarchy)
+            {
+                gunPivot.GetComponentInChildren<SecurityGunController>().enemySwitchedDirection();
+            }
+
         }
 
         if (gunPivot.gameObject.activeInHierarchy)
@@ -165,6 +187,7 @@ public class SecurityMovement : MonoBehaviour
             yield return new WaitForFixedUpdate();
             Vector3 rbPos = rb.position;
             distance = location - rbPos;
+            Debug.Log("Still here " + rb.velocity);
         }
         isAtLocation = true;
         cooldownTime = 0;
@@ -175,29 +198,120 @@ public class SecurityMovement : MonoBehaviour
 
     private void attack()
     {
-        StartCoroutine(grenadeAttack());
+        //chargeAttack();
+        //StartCoroutine(chargeAttack());
         //mechanics for attack: 
         //Attack 1: Shoot at player
         //Attack 2: Throw a grenade
         //Detect opponent attacks, jump up 50% of the time
         //Attack 3: Tackle (Run at opponent, can still be damaged but can only be stopped by dodging
         //Inform other nearby security guards
+        StartCoroutine(shootAttack());
     }
 
-    private void shootAttack()
+    private IEnumerator shootAttack()
     {
-        Vector3 playerPos = player.position;
+        //Vector3 playerPos = player.position;
+        //Debug.Log("Gun pivot: " + gunPivot);
+        //Debug.Log(gunPivot.GetComponentInChildren<SecurityGunController>());
+
+        Debug.Log("Shooting");
+        gunPivot.GetComponentInChildren<SecurityGunController>().SpawnLaser();
+        yield return new WaitForSeconds(2);
+        isAttacking = false;
 
     }
 
     private IEnumerator grenadeAttack()
     {
+        gunPivot.gameObject.SetActive(false);
         GameObject grenade = Instantiate(grenadePrefab, transform.position, transform.rotation);
         //grenade.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 5, 0);
         grenade.GetComponent<GrenadeController>().AimAtPlayer();
 
         yield return new WaitForSeconds(2);
         isAttacking = false;
+        gunPivot.gameObject.SetActive(true);
+    }
+
+    private IEnumerator chargeAttack()
+    {
+        //Debug.Log("Here!");
+
+        gunPivot.gameObject.SetActive(false);
+        float distance = player.position.x - transform.position.x;
+        Vector2 target = new Vector2(distance * 2 + transform.position.x, transform.position.y);    //Go to the same distance, but on the other side of the player
+        //Debug.Log(target);
+
+        bool doneChargeAttack = false;
+        Vector2 moveIncrement = target.x < transform.position.x ? Vector2.left : Vector2.right;
+        
+        while (!doneChargeAttack)
+        {
+            transform.position = transform.position + (Vector3)moveIncrement * Time.deltaTime * speed * 2;
+            if(Vector2.Distance(target, transform.position) < 0.2f)
+            {
+                Debug.Log("Reached the target");
+
+                doneChargeAttack = true;
+            }
+
+            if (collider.IsTouching(player.GetComponent<Collider2D>()))
+            {
+                //If so, deal damage to player
+                
+                Debug.Log("Player took 10 damage from colliding with the enemy");
+                doneChargeAttack = true;
+
+            }
+
+            yield return null;
+
+        }
+        //isAtLocation = true;
+        //cooldownTime = 0;
+        //rb.velocity = Vector2.zero;
+        //Create a random range to allow for variation in the enemies movement
+        //idleMovementCooldown = Random.Range(0.5f, 1.5f);
+        /*
+        rb.velocity = new Vector2(transform.localScale.x, 0).normalized * speed * 2;
+        StartCoroutine(MoveTillComplete(endGoal));
+        while(!isAtLocation)
+        {
+            //Check if player is touching the guard
+            if(collider.IsTouching(player.GetComponent<Collider2D>())) {
+                //If so, deal damage to player
+                Debug.Log("Player took 10 damage from colliding with the enemy");
+                isAtLocation = true;
+
+            }
+            yield return null;
+        }
+        */
+        //yield return new WaitForSeconds(2);
+
+        Debug.Log("Charge attack finished");
+        isAttacking = false;
+        gunPivot.gameObject.SetActive(true);
+        //Add a little cooldown
+        yield return new WaitForSeconds(1);
+
+    }
+
+    private void dodgeAttack()
+    {
+        Vector2 direction = transform.localScale.x < 0 ? Vector2.left : Vector2.right;
+        
+        RaycastHit2D playerBullet = Physics2D.BoxCast(this.collider.bounds.center, collider.bounds.size, 0, direction, dodgeRange, bulletLayer);
+        
+        if(playerBullet.collider != null)
+        {
+            
+            if(playerBullet.collider.gameObject.GetComponent<LaserController>().getOwner() == LaserController.Owner.Player)
+            {
+                rb.velocity = Vector2.up * jumpHeight;
+            }
+        }
     }
 
 

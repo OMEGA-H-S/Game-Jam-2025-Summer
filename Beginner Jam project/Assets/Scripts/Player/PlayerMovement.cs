@@ -37,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dir = new Vector3(input * speed, jump, 0) * Time.deltaTime;
         transform.Translate(dir);
         */
+        Debug.Log(gunPivot);
+
         if (input < -0.1f && this.transform.localScale.x > 0)
         {
             this.transform.localScale = new Vector3(-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
@@ -92,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         //Add logic to determine when player is grounded
         BoxCollider2D collider = GetComponent<BoxCollider2D>();
         RaycastHit2D cast = Physics2D.BoxCast(collider.bounds.center, collider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
-
+        //Debug.Log(cast.collider.gameObject.layer + " " + LayerMask.NameToLayer("Ground"));
         return cast.collider != null;
     }
 
