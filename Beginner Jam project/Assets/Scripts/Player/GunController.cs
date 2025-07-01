@@ -5,14 +5,19 @@ using UnityEngine;
 public class GunController : MonoBehaviour
 {
     private Vector3 v1 = Vector3.right;
-    private Transform pivot;
+    protected Transform pivot;
     private Camera camera;
     [SerializeField] private GameObject laser;
-    [SerializeField] private float timeBetweenShot = 0.5f;
+    [SerializeField] protected float timeBetweenShot = 0.5f;
     private int offset = 0;
 
-    private float prevShot;
+    protected float prevShot;
     private Vector2 comparison = Vector2.right;
+    private bool invertLaser;
+
+    [SerializeField] private Transform bulletLocation;
+
+    [SerializeField] private PlayerHealth anim;
 
 
     private void Awake()
@@ -20,9 +25,11 @@ public class GunController : MonoBehaviour
         pivot = transform.parent;
         camera = Camera.main;
         prevShot = 0;
+        invertLaser = false;
+        anim = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
 
-    private void Update()
+    protected void Update()
     {
         Rotate();
         prevShot += Time.deltaTime;
@@ -35,7 +42,7 @@ public class GunController : MonoBehaviour
 
     }
 
-    private void Rotate()
+    protected void Rotate()
     {
         Vector3 mouseLocation = Input.mousePosition;
 
@@ -60,9 +67,32 @@ public class GunController : MonoBehaviour
         */
 
         float angle =  Vector2.SignedAngle(comparison, v2);
-        Debug.Log(angle);
+        //Debug.Log(angle);
 
         pivot.eulerAngles = new Vector3(0, 0, angle + offset);
+
+        //Debug.Log(pivot.localEulerAngles.z);
+
+        //Using normalizedAngle because localEulerAngles sometimes isn't within -180 to 180
+        //localEulerAngles is depdendent upon either Vector2.right or Vector2.left, depending on what direction character is facing
+        //
+
+        if (normalizedAngle(pivot.localEulerAngles.z) > 70 && normalizedAngle(pivot.localEulerAngles.z) < 110)
+        {
+            pivot.localEulerAngles = new Vector3(0, 0, 70);
+        }
+        else if (normalizedAngle(pivot.localEulerAngles.z) >= 110)
+        {
+            pivot.localEulerAngles = new Vector3(0, 0, 180 - normalizedAngle(pivot.localEulerAngles.z));
+        }
+        else if (normalizedAngle(pivot.localEulerAngles.z) < -70 && normalizedAngle(pivot.localEulerAngles.z) > -110)
+        {
+            pivot.localEulerAngles = new Vector3(0, 0, -70);
+        }
+        else if (normalizedAngle(pivot.localEulerAngles.z) < -110)
+        {
+            pivot.localEulerAngles = new Vector3(0, 0, -180 - normalizedAngle(pivot.localEulerAngles.z));
+        }
 
         
 
@@ -83,12 +113,19 @@ public class GunController : MonoBehaviour
     }
     */
 
-    private void SpawnLaser()
+    protected void SpawnLaser()
     {
-        Instantiate(laser, transform.position, Quaternion.Euler(new Vector3(0, 0, pivot.eulerAngles.z - offset)));
+        anim.playerShooting();
+        float angle = pivot.eulerAngles.z;
+        if(invertLaser)
+        {
+            angle += 180;
+            angle = normalizedAngle(angle);
+        }
+        Instantiate(laser, bulletLocation.position, Quaternion.Euler(new Vector3(0, 0, angle))).GetComponentInChildren<LaserController>().setBulletOwner(LaserController.Owner.Player);
     }
 
-    private float normalizedAngle(float angle)
+    protected float normalizedAngle(float angle)
     {
         while(angle < -180 || angle > 180)
         {
@@ -113,5 +150,6 @@ public class GunController : MonoBehaviour
         //offset = (offset == 0) ? 180 : 0;
         //Debug.Log(offset);.
         comparison = comparison == Vector2.right ? Vector2.left : Vector2.right;
+        invertLaser = !invertLaser;
     }
 }

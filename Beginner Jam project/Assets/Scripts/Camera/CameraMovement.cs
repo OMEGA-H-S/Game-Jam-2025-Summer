@@ -22,7 +22,7 @@ public class CameraMovement : MonoBehaviour
         //xBounds will as if right now place virtually no limit on camera x bounds
         xBounds = new Vector2(playerPos.transform.position.x - 100, playerPos.transform.position.x + 100);
         //yBounds prevents camera from falling too low (Adjust +4, higher makes camera rise and lower makes camera fall)
-        yBounds = new Vector2(playerPos.transform.position.y + 4, playerPos.transform.position.y + 100);
+        yBounds = new Vector2(playerPos.transform.position.y + 1, playerPos.transform.position.y + 100);
     }
 
     // Update is called once per frame
