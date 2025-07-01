@@ -38,4 +38,26 @@ public class LaserController : MonoBehaviour
     {
         return this.bulletOwner;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            if(bulletOwner == Owner.Enemy) {
+                collision.gameObject.GetComponent<PlayerHealth>().playerAttacked(2);
+                Debug.Log("Player lost 2 health");
+            }
+        }
+        if (collision.gameObject.tag == "Enemy")
+        {
+            if (bulletOwner == Owner.Player)
+            {
+                collision.gameObject.GetComponent<EnemyHealth>().enemyAttacked(2);
+                Debug.Log("Enemy lost 2 health");
+            }
+        }
+
+        Destroy(this.gameObject);   
+
+    }
 }

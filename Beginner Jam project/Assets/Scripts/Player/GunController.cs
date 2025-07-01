@@ -15,6 +15,10 @@ public class GunController : MonoBehaviour
     private Vector2 comparison = Vector2.right;
     private bool invertLaser;
 
+    [SerializeField] private Transform bulletLocation;
+
+    [SerializeField] private PlayerHealth anim;
+
 
     private void Awake()
     {
@@ -22,6 +26,7 @@ public class GunController : MonoBehaviour
         camera = Camera.main;
         prevShot = 0;
         invertLaser = false;
+        anim = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
 
     protected void Update()
@@ -110,13 +115,14 @@ public class GunController : MonoBehaviour
 
     protected void SpawnLaser()
     {
+        anim.playerShooting();
         float angle = pivot.eulerAngles.z;
         if(invertLaser)
         {
             angle += 180;
             angle = normalizedAngle(angle);
         }
-        Instantiate(laser, transform.position, Quaternion.Euler(new Vector3(0, 0, angle))).GetComponentInChildren<LaserController>().setBulletOwner(LaserController.Owner.Player);
+        Instantiate(laser, bulletLocation.position, Quaternion.Euler(new Vector3(0, 0, angle))).GetComponentInChildren<LaserController>().setBulletOwner(LaserController.Owner.Player);
     }
 
     protected float normalizedAngle(float angle)

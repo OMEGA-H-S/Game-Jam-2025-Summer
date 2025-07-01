@@ -39,6 +39,8 @@ public class SecurityMovement : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float dodgeFreq = 0.3f;
     [SerializeField] private float attackDelay = 1f;
 
+    private Animator anim;
+
     private enum Difficulty
     {
         Easy, 
@@ -57,6 +59,7 @@ public class SecurityMovement : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         gunPivot.gameObject.SetActive(false);
         collider = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
 
         if(guardDifficulty == Difficulty.Easy)
         {
@@ -66,6 +69,7 @@ public class SecurityMovement : MonoBehaviour
             jumpHeight = 10f;
             dodgeFreq = 0.25f;
             attackDelay = 1.2f;
+            anim.SetTrigger("Green");
         }
         if(guardDifficulty == Difficulty.Medium)
         {
@@ -75,6 +79,7 @@ public class SecurityMovement : MonoBehaviour
             jumpHeight = 18f;
             dodgeFreq = 0.45f;
             attackDelay = 1f;
+            anim.SetTrigger("Blue");
 
         }
         else if (guardDifficulty == Difficulty.Hard)
@@ -87,6 +92,8 @@ public class SecurityMovement : MonoBehaviour
             attackDelay = 0.8f;
 
         }
+
+        
 
     }
 
@@ -110,11 +117,13 @@ public class SecurityMovement : MonoBehaviour
                         isAtLocation = false;
                         //Move towards that position 
                         MoveTowards(randomLoc);
+                        anim.SetBool("isWalking", true);
                     }
                     else
                     {
                         //Debug.Log("Here");
                         cooldownTime += Time.deltaTime;
+                        anim.SetBool("isWalking", false);
                     }
                 }
                 if(Vector2.Distance(this.transform.position, player.position) < targetDistance)
@@ -125,6 +134,7 @@ public class SecurityMovement : MonoBehaviour
                     gunPivot.gameObject.SetActive(true);
                     rb.velocity = Vector2.zero;
                     //Debug.Log("I see the player, so i set my velocity to " + rb.velocity);
+                    anim.SetBool("isWalking", false);
                 }
                 break;
 
@@ -141,9 +151,10 @@ public class SecurityMovement : MonoBehaviour
                     currMoveState = MovementState.Idle;
                 }
                 //Move one unit towards player
-                playerFound();
+
                 if(!isAttacking && currMoveState == MovementState.Following)
                 {
+                    playerFound();
                     //Debug.Log("Attacking now");
                     attack();
                     isAttacking = true;
@@ -308,6 +319,8 @@ public class SecurityMovement : MonoBehaviour
 
     private IEnumerator chargeAttack()
     {
+        anim.SetBool("isWalking", false);
+        anim.SetBool("isCharging", true);
         //Debug.Log("Here!");
 
         gunPivot.gameObject.SetActive(false);
@@ -329,11 +342,11 @@ public class SecurityMovement : MonoBehaviour
                 doneChargeAttack = true;
             }
 
-            if (collider.IsTouching(player.GetComponent<Collider2D>()))
+            if (collider.IsTouching(player.GetComponent<BoxCollider2D>()))
             {
                 //If so, deal damage to player
-                
-                Debug.Log("Player took 10 damage from colliding with the enemy");
+
+                player.GetComponent<PlayerHealth>().playerAttacked((int)Random.Range(5, 10));
                 doneChargeAttack = true;
 
             }
@@ -381,6 +394,7 @@ public class SecurityMovement : MonoBehaviour
         //yield return new WaitForSeconds(2);
 
         Debug.Log("Charge attack finished");
+        anim.SetBool("isCharging", false);
         yield return new WaitForSeconds(2 * attackDelay);
         isAttacking = false;
         gunPivot.gameObject.SetActive(true);
@@ -408,7 +422,7 @@ public class SecurityMovement : MonoBehaviour
     private bool isGrounded()
     {
         //Add logic to determine when player is grounded
-        Collider2D collider = GetComponent<Collider2D>();
+        Collider2D collider = GetComponent<BoxCollider2D>();
         RaycastHit2D cast = Physics2D.BoxCast(collider.bounds.center, collider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
         //Debug.Log(cast.collider.gameObject.layer + " " + LayerMask.NameToLayer("Ground"));
         return cast.collider != null;

@@ -54,7 +54,7 @@ public class GrenadeController : MonoBehaviour
         if(Vector2.Distance(player.transform.position, transform.position) < blastRadius)
         {
             //Eventually, add damage to player
-            Debug.Log("Player lost 5 health");
+            player.GetComponent<PlayerHealth>().playerAttacked((int)Random.Range(4, 7));
         }
         //Instantiate a separate game object that will just explode (using unity animation)
         GameObject.Destroy(this.gameObject);

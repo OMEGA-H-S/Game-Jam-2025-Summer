@@ -15,12 +15,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector2 crouchSize, standingSize;
     private BoxCollider2D collider;
 
+    private PlayerHealth anim;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         collider = GetComponent<BoxCollider2D>();
         standingOffset = collider.offset;
         standingSize = collider.size;
+        anim = GetComponent<PlayerHealth>();    
     }
 
     private void Update()
@@ -78,6 +81,16 @@ public class PlayerMovement : MonoBehaviour
     {
         float input = Input.GetAxis("Horizontal");
         body.velocity = new Vector2(input * speed, body.velocity.y);
+        if(Mathf.Abs(input) > 0.01f)
+        {
+            anim.playerMoving(true);
+            
+        }
+        else
+        {
+            anim.playerMoving(false);
+            
+        }
         
 
         if (pendingJump)
@@ -105,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
             collider.size = this.crouchSize;
             collider.offset = this.crouchOffset;
             gunPivot.SetActive(false);
+            anim.playerCrouching(true);
         }
 
         //Add crouching animatino
@@ -114,6 +128,8 @@ public class PlayerMovement : MonoBehaviour
             collider.size = this.standingSize;
             collider.offset = this.standingOffset;
             gunPivot.SetActive(true);
+            anim.playerCrouching(false);
+
         }
     }
 
