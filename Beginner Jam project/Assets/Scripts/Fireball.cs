@@ -4,14 +4,25 @@ using UnityEngine;
 
 public class Fireball : MonoBehaviour
 {
-    public float projectileSpeed;
+    public float projectileSpeed = 3f;
     private Rigidbody2D rigidBody;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
+    {
+
+
+    }
+    public void Launch(Vector2 direction)
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        rigidBody.velocity = transform.right * projectileSpeed;
+        rigidBody.velocity = direction.normalized * projectileSpeed;
+
+        // Optional: flip the sprite if going left
+        if (direction.x < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
     }
 
-    
+
 }
