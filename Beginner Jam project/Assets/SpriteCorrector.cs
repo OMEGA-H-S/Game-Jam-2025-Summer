@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpriteCorrector : MonoBehaviour
 {
     [SerializeField] GameObject movementObject;
+    [SerializeField] GameObject player;
     Rigidbody2D rb;
 
     private void Start()
@@ -18,5 +19,15 @@ public class SpriteCorrector : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         else
             transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+    }
+
+    public void makeFacePlayer()
+    {
+        float direction = movementObject.transform.position.x - player.transform.position.x;
+
+        if (direction < 0)
+            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        else
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
 }

@@ -60,7 +60,6 @@ public class GunController : MonoBehaviour
         */
 
         float angle =  Vector2.SignedAngle(comparison, v2);
-        Debug.Log(angle);
 
         pivot.eulerAngles = new Vector3(0, 0, angle + offset);
 

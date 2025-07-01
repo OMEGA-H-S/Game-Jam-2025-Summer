@@ -309,6 +309,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+--- !u!1 &1174288712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1174288713}
+  - component: {fileID: 1174288714}
+  m_Layer: 0
+  m_Name: ScreechSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1174288713
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174288712}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.06, y: -0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1217652718}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1174288714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174288712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1899c2cedeb3b19459944443a910f315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screechObject: {fileID: 3994013676624529239, guid: f49b91ab783524b48940fba970e22313, type: 3}
 --- !u!1 &1212934055
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,10 +462,20 @@ MonoBehaviour:
   aheadDistanceX: 1.76
   cameraSpeed: 2.91
   orthSize: 12
+--- !u!4 &1217652718 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5046135442675676137, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+  m_PrefabInstance: {fileID: 5239882454900068221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1330555693 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7187566607241313002, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
   m_PrefabInstance: {fileID: 975498928}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1365851613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7047746846600638949, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+  m_PrefabInstance: {fileID: 5239882454900068221}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5239882454900068221
 PrefabInstance:
@@ -430,6 +485,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1518866668569407702, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1330555693}
     - target: {fileID: 1569368803132568163, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: m_Size.x
       value: 1.55
@@ -498,13 +557,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6761473369879038492, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7047746846600638949, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Name
+      value: PteroSprite
+      objectReference: {fileID: 0}
     - target: {fileID: 8567062680511495594, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1330555693}
+    - target: {fileID: 8567062680511495594, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: spriteObject
+      value: 
+      objectReference: {fileID: 1365851613}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5046135442675676137, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1174288713}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
 --- !u!1660057539 &9223372036854775807
