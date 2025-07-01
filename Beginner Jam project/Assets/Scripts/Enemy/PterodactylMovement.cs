@@ -222,7 +222,7 @@ public class PterodactylMovement : MonoBehaviour
             rb.MovePosition(moveTowardsVectorWithY);
       
         // If we are at or have gone to the desired vector3
-        if (desiredVector3 == transform.position || isAtVector)
+        if ((desiredVector3.x - transform.position.x < 0.2 && desiredVector3.y == transform.position.y) || isAtVector)
         {
             isAtVector = true;
             if (attackTimer > 0 && !isScreeching) // Start coroutines and update screeching bool
@@ -356,7 +356,7 @@ public class PterodactylMovement : MonoBehaviour
     IEnumerator ScreechMovement()
     {
         bool isUp = true;
-        float yMovementSpeed = 5f;
+        float yMovementSpeed = 6f;
 
         Vector3 desiredVector3 = transform.position;
         Vector3 moveTowards;
@@ -374,6 +374,9 @@ public class PterodactylMovement : MonoBehaviour
                 {
                     desiredVector3 = new Vector3(player.transform.position.x + screechDistance, transform.position.y + 4f);
                 }
+            } else
+            {
+                desiredVector3 = new Vector3(player.transform.position.x + screechDistance, desiredVector3.y);
             }
 
             // Move
