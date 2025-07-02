@@ -161,9 +161,7 @@ public class PterodactylMovement : MonoBehaviour
             GetComponentInChildren<EnemyHealth>().enemyAttacked(8f);
             currentHealth = currentHealth - 10f;
 
-            GetComponentInChildren<HealthBar>().getHealth();
             GetComponentInChildren<HealthBar>().SetHealth((int)(currentHealth));
-            
         }
     }
 
