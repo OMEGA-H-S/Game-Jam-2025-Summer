@@ -60,7 +60,6 @@ public class SpriteCorrector : MonoBehaviour
     {
         animator.SetBool("Swooping", true);
         transform.rotation = Quaternion.Euler(0f, 0f, 90f);
-        Debug.Log(transform.rotation);
     }
 
     public void endDive()

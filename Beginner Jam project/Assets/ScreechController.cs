@@ -10,10 +10,9 @@ public class ScreechController : MonoBehaviour
     {
         if (isUp)
         {
-            Instantiate(screechObject, new Vector3(GetComponentInParent<Transform>().position.x, yFloatLevel - 0.9f), GetComponentInParent<Transform>().rotation);
+            Instantiate(screechObject, new Vector3(GetComponentInParent<Transform>().position.x, yFloatLevel - 1.9f), GetComponentInParent<Transform>().rotation);
         } else
         {
-            Debug.Log(yFloatLevel - 2.8);
             Instantiate(screechObject, new Vector3(GetComponentInParent<Transform>().position.x, yFloatLevel - 6f), GetComponentInParent<Transform>().rotation);
         }
     }

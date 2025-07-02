@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MouthFull
+  m_Name: FlappingHard
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,11 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: d4e95da1396f4ce44bcb21dde70e65c1, type: 3}
-    - time: 0.2
-      value: {fileID: 21300000, guid: f215945d046724a4988bc647028ee4e1, type: 3}
+      value: {fileID: 21300000, guid: 9613d47d7cf37fb458e74c9b3236df8c, type: 3}
+    - time: 0.13333334
+      value: {fileID: 21300000, guid: 5a1ab3048b2b94349a4af060e20638f3, type: 3}
+    - time: 0.26666668
+      value: {fileID: 21300000, guid: b304a2ee38e6e394cbfde98ac9400e4c, type: 3}
     - time: 0.4
-      value: {fileID: 21300000, guid: a20a271165ef2b4488d87dd11029bd97, type: 3}
+      value: {fileID: 21300000, guid: 5a1ab3048b2b94349a4af060e20638f3, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -48,9 +50,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: d4e95da1396f4ce44bcb21dde70e65c1, type: 3}
-    - {fileID: 21300000, guid: f215945d046724a4988bc647028ee4e1, type: 3}
-    - {fileID: 21300000, guid: a20a271165ef2b4488d87dd11029bd97, type: 3}
+    - {fileID: 21300000, guid: 9613d47d7cf37fb458e74c9b3236df8c, type: 3}
+    - {fileID: 21300000, guid: 5a1ab3048b2b94349a4af060e20638f3, type: 3}
+    - {fileID: 21300000, guid: b304a2ee38e6e394cbfde98ac9400e4c, type: 3}
+    - {fileID: 21300000, guid: 5a1ab3048b2b94349a4af060e20638f3, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
