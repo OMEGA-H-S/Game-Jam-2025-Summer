@@ -9,6 +9,8 @@ public class PterodactylMovement : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject spriteObject;
+
+
     private Rigidbody2D rb;
 
     private PterodactylState state;
@@ -48,6 +50,7 @@ public class PterodactylMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         state = PterodactylState.Idle;
         hitObject = false;
+        pterodactylDesiredYPosition = transform.position.y;
         StartCoroutine(Idle());
     }
 
@@ -58,35 +61,28 @@ public class PterodactylMovement : MonoBehaviour
         // if the player is within the max attack distance
         if (Mathf.Abs(player.transform.position.x - transform.position.x) < maximumAttackDistance || state != PterodactylState.Idle)
 
-            // TODO Placeholder for which attack the pterodactyl does
-            if (false)
+            if (Random.Range(0, 50) == 1 && state == PterodactylState.Idle)
             {
-                // If the pterodactyl is idle and a 1 in 100 chance hits
-                if (Random.Range(0, 100) == 1 && state == PterodactylState.Idle)
+                int random = Random.Range(0,3);
+
+                // TODO Placeholder for which attack the pterodactyl does
+                if (random == 0)
                 {
                     StopCoroutine(Idle());
                     state = PterodactylState.Attacking;
-                }
-
-                // If the pterodactyl is attacking or resetting from one and it's not already swooping, start the swoop coroutine
-                if ((state != PterodactylState.Idle) && !isSwooping)
-                {
-                    isSwooping = true;
                     StartCoroutine(SwoopCoroutine()); // Start Swooping
+                    GetComponentInChildren<SpriteCorrector>().startSwoop();
                 }
-            } else if (false) 
-            {
-
-                if (Random.Range(0, 100) == 1 && state == PterodactylState.Idle)
+                else if (random == 1)
                 {
                     attackTimer = 5f;
                     state = PterodactylState.Attacking;
                     StartCoroutine(DiveCoroutiune());
+
                 }
-            } else
-            {
-                if (Random.Range(0, 100) == 1 && state == PterodactylState.Idle)
+                else
                 {
+                    GetComponentInChildren<SpriteCorrector>().startScreech();
                     attackTimer = 5f;
                     state = PterodactylState.Attacking;
                     StartCoroutine(ScreechCoroutine());
@@ -139,13 +135,14 @@ public class PterodactylMovement : MonoBehaviour
         rb.MovePosition(newPosition);
         
         // If the transform has gotten to where it needs to go
-        if (transform.position == verticalMovementVector)
+        if (transform.position.y - verticalMovementVector.y < 0.2)
         {
             state = PterodactylState.Resetting; // Set the pterodactyl to reset
             
             // Finds the direction the pterodactyl needs to fling towards and "boosts"
             float direction = (player.transform.position - transform.position).x / Mathf.Abs((player.transform.position - transform.position).x);
             rb.velocity = new Vector3(direction * boostSpeed, 0);
+            GetComponentInChildren<SpriteCorrector>().endSwoop();
         }
     }
 
@@ -168,7 +165,7 @@ public class PterodactylMovement : MonoBehaviour
             }
 
             // If we've reached the hight and we aren't diving yet
-            if (transform.position == desiredDiveVector3 && !isDiving)
+            if ((transform.position.x - desiredDiveVector3.x < 0.2 && transform.position.y == desiredDiveVector3.y) && !isDiving)
             {
                 // stop the movement, and delay the dive
                 rb.velocity = Vector3.zero;
@@ -179,6 +176,7 @@ public class PterodactylMovement : MonoBehaviour
         {
             // If the attack timer is done, reset the pteroactyl
             if (attackTimer <= 0) {
+                GetComponentInChildren<SpriteCorrector>().endDive();
                 ResetPterodactyl(pterodactylDesiredYPosition, yFloatingUpSpeed);
             } else
             {
@@ -199,6 +197,7 @@ public class PterodactylMovement : MonoBehaviour
         }
         else
         {
+            GetComponentInChildren<SpriteCorrector>().endScreech();
             ResetPterodactyl(pterodactylDesiredYPosition, yFloatingUpSpeed); // Reset Portion
         }
     }
@@ -216,7 +215,7 @@ public class PterodactylMovement : MonoBehaviour
         spriteObject.GetComponent<SpriteCorrector>().makeFacePlayer();
 
         // Move the pterodactyl to the same y level as the player while keeping {screechDistance} from the player
-        Vector3 desiredVector3 = new Vector3(player.transform.position.x + screechDistance, player.transform.position.y + 0.3f);
+        Vector3 desiredVector3 = new Vector3(player.transform.position.x + screechDistance, player.transform.position.y);
         Vector3 moveTowardsVectorWithY = Vector3.MoveTowards(transform.position, desiredVector3, descentSpeed);
         if (!isAtVector)
             rb.MovePosition(moveTowardsVectorWithY);
@@ -228,8 +227,7 @@ public class PterodactylMovement : MonoBehaviour
             if (attackTimer > 0 && !isScreeching) // Start coroutines and update screeching bool
             { // Only runs on first update
                 isScreeching = true;
-                StartCoroutine(ScreechDelaySpawn());
-                StartCoroutine(ScreechMovement());
+                StartCoroutine(ScreechMovementSpawn());
             }
             else if (attackTimer > 0) // Decrease attack timer if screeching
             {
@@ -320,12 +318,14 @@ public class PterodactylMovement : MonoBehaviour
      */
     IEnumerator DiveDelay()
     {
-        float diveSpeed = 40f;
+        float diveSpeed = 100f;
 
         yield return new WaitForSeconds(0.7f);
 
         state = PterodactylState.Resetting;
-        rb.velocity = new Vector2(0, -diveSpeed);
+        rb.velocity = Vector3.zero;
+        rb.AddForce(new Vector2(0, - diveSpeed), ForceMode2D.Impulse);
+        GetComponentInChildren<SpriteCorrector>().startDive();
 
     }
 
@@ -339,24 +339,14 @@ public class PterodactylMovement : MonoBehaviour
     }
 
     /**
-     * Delays the pterodactyl screech spawning.
-     */
-    IEnumerator ScreechDelaySpawn()
-    {
-        while (state == PterodactylState.Attacking)
-        {
-            GetComponentInChildren<ScreechController>().SpawnObject();
-            yield return new WaitForSeconds(1f);
-        }
-    }
-
-    /**
      * Deals with the movement of the pterodactyl when screeching.
      */
-    IEnumerator ScreechMovement()
+    IEnumerator ScreechMovementSpawn()
     {
         bool isUp = true;
-        float yMovementSpeed = 6f;
+        float yMovementSpeed = 8f;
+        float timer = 1.5f;
+        float screechTime = 1.5f;
 
         Vector3 desiredVector3 = transform.position;
         Vector3 moveTowards;
@@ -379,8 +369,16 @@ public class PterodactylMovement : MonoBehaviour
                 desiredVector3 = new Vector3(player.transform.position.x + screechDistance, desiredVector3.y);
             }
 
-            // Move
-            moveTowards = Vector3.MoveTowards(transform.position, desiredVector3, yMovementSpeed * Time.fixedDeltaTime);
+            if (timer <= 0)
+            {
+                timer = screechTime;
+                GetComponentInChildren<ScreechController>().SpawnObject(isUp, pterodactylDesiredYPosition);
+            }
+            else
+                timer -= Time.deltaTime;
+
+                // Move
+                moveTowards = Vector3.MoveTowards(transform.position, desiredVector3, yMovementSpeed * Time.fixedDeltaTime);
             rb.MovePosition(moveTowards);
             yield return null;
         }
