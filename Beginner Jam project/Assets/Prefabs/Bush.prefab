@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 241516176080792957}
   - component: {fileID: 1710747394793806083}
-  - component: {fileID: 6654198430538423620}
   - component: {fileID: 7795146085711099031}
+  - component: {fileID: 7309634102604796302}
   m_Layer: 0
   m_Name: Bush
   m_TagString: Untagged
@@ -28,9 +28,9 @@ Transform:
   m_GameObject: {fileID: 2315342766473742636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.18, y: -4.23, z: 0}
-  m_LocalScale: {x: 3.153621, y: 2.8194983, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.66, y: 0.5900737, z: 0.20928323}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 739436b2bf3907f44a48a5073c5ba872, type: 3}
   m_Color: {r: 0.35660422, g: 0.8584906, b: 0.19032574, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,8 +86,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &6654198430538423620
-CircleCollider2D:
+--- !u!114 &7795146085711099031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2315342766473742636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd4825a03d6f91d4f8e7dc382c71e338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  gravityScale: 30
+  timer: 0
+  hurtTimer: 1
+  drag: 50
+  playerDamage: 5
+--- !u!70 &7309634102604796302
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -118,24 +136,6 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.08989927}
-  serializedVersion: 2
-  m_Radius: 0.43742368
---- !u!114 &7795146085711099031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2315342766473742636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd4825a03d6f91d4f8e7dc382c71e338, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  gravityScale: 30
-  timer: 0
-  hurtTimer: 1
-  drag: 50
-  playerDamage: 5
+  m_Offset: {x: 2.185699, y: -0.3783473}
+  m_Size: {x: 6.1979637, y: 2.6748502}
+  m_Direction: 1
