@@ -25,7 +25,7 @@ public class SecurityMovement : MonoBehaviour
     [SerializeField] private Transform gunPivot;
 
     [SerializeField] private GameObject grenadePrefab;
-    private Collider2D collider;
+    private BoxCollider2D collider;
 
     [SerializeField] private LayerMask bulletLayer;
 
@@ -39,9 +39,19 @@ public class SecurityMovement : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float dodgeFreq = 0.3f;
     [SerializeField] private float attackDelay = 1f;
 
+    private float touchDamageCooldown = 0.5f;
+    private float timeSincePrevTouch = 0;
+
+    
+
+
+    
+
     private Animator anim;
 
-    private enum Difficulty
+    [SerializeField] private Animator gunAnim;
+
+    public enum Difficulty
     {
         Easy, 
         Medium, 
@@ -51,6 +61,12 @@ public class SecurityMovement : MonoBehaviour
     [SerializeField] Difficulty guardDifficulty;
 
 
+    private Vector2 originalColliderSize;
+    private Vector2 originalColliderOffset;
+    [SerializeField] private Vector2 chargeColliderSize;
+    [SerializeField] private Vector2 chargeColliderOffset;
+
+
 
     void Start()
     {
@@ -58,18 +74,22 @@ public class SecurityMovement : MonoBehaviour
         centerLocation = this.transform.position;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         gunPivot.gameObject.SetActive(false);
-        collider = GetComponent<Collider2D>();
+        collider = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+
+        originalColliderSize = collider.size;
+        originalColliderOffset = collider.offset;
 
         if(guardDifficulty == Difficulty.Easy)
         {
             radius = 4f;
-            targetDistance = 16;
+            targetDistance = 18;
             speed = 2f;
-            jumpHeight = 10f;
+            jumpHeight = 18f;
             dodgeFreq = 0.25f;
-            attackDelay = 1.2f;
+            attackDelay = 1.5f;
             anim.SetTrigger("Green");
+            StartCoroutine(armAnimationDelay("Green"));
         }
         if(guardDifficulty == Difficulty.Medium)
         {
@@ -80,6 +100,7 @@ public class SecurityMovement : MonoBehaviour
             dodgeFreq = 0.45f;
             attackDelay = 1f;
             anim.SetTrigger("Blue");
+            StartCoroutine(armAnimationDelay("Blue"));
 
         }
         else if (guardDifficulty == Difficulty.Hard)
@@ -97,9 +118,16 @@ public class SecurityMovement : MonoBehaviour
 
     }
 
+    private IEnumerator armAnimationDelay(string trigger)
+    {
+        yield return null;
+        gunAnim.SetTrigger(trigger);
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
+        timeSincePrevTouch += Time.deltaTime;
         //Debug.Log(currMoveState);
         //Part 1: Idle
         switch (currMoveState)
@@ -118,12 +146,14 @@ public class SecurityMovement : MonoBehaviour
                         //Move towards that position 
                         MoveTowards(randomLoc);
                         anim.SetBool("isWalking", true);
+                        gunPivot.gameObject.SetActive(false);
                     }
                     else
                     {
                         //Debug.Log("Here");
                         cooldownTime += Time.deltaTime;
                         anim.SetBool("isWalking", false);
+                        gunPivot.gameObject.SetActive(true);
                     }
                 }
                 if(Vector2.Distance(this.transform.position, player.position) < targetDistance)
@@ -163,12 +193,32 @@ public class SecurityMovement : MonoBehaviour
                 break;
 
         }
+
+        if(holeInFront())
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+
+
         //Part 2: Check if player is within vicinity
         //If so, check if player is within the angle chosen to be the enemy's field of view
         //If both are true, change states and follow the player
         //At each fixedupdate, the velocity of the enemy should be in the direction of the player. 
         //If the player is no longer visible, the enemy should head to the spot at which the player was last seen
         //If the player is still not within the line of sight, then go back to idle movement, with the new center being that point
+    }
+
+    public Difficulty getDifficulty()
+    {
+        return this.guardDifficulty;
+    }
+
+    private bool holeInFront()
+    {
+        float multiplier = Mathf.Abs(transform.localScale.x) / transform.localScale.x;
+        RaycastHit2D wallDetect = Physics2D.BoxCast((Vector2)collider.bounds.center + new Vector2(collider.bounds.size.x, 0) * multiplier, collider.bounds.size, 0, Vector2.down, 0.2f, groundLayer);
+        Debug.Log("wall detect: " + wallDetect.collider != null);
+        return wallDetect.collider == null;
     }
     private void playerFound()
     {
@@ -242,12 +292,14 @@ public class SecurityMovement : MonoBehaviour
     private IEnumerator MoveTillComplete(Vector3 location, Vector3 direction)
     {
         Vector3 distance = location - transform.position;
-        while (distance.magnitude > 0.5f && currMoveState == MovementState.Idle)
+        float abortTime = 0;
+        while (distance.magnitude > 0.5f && currMoveState == MovementState.Idle && abortTime < 5f)
         {
             rb.velocity = direction * speed;
             yield return new WaitForFixedUpdate();
             Vector3 rbPos = rb.position;
             distance = location - rbPos;
+            abortTime += Time.deltaTime;
             //Debug.Log("Still here " + rb.velocity);
         }
         isAtLocation = true;
@@ -299,6 +351,9 @@ public class SecurityMovement : MonoBehaviour
         //Debug.Log(gunPivot.GetComponentInChildren<SecurityGunController>());
 
         Debug.Log("Shooting");
+        anim.SetTrigger("isShooting");
+        gunAnim.SetTrigger("Shoot");
+        Debug.Log("Animation shooting has been set");
         gunPivot.GetComponentInChildren<SecurityGunController>().SpawnLaser();
         yield return new WaitForSeconds(0.5f * attackDelay);
         isAttacking = false;
@@ -312,7 +367,10 @@ public class SecurityMovement : MonoBehaviour
         //grenade.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 5, 0);
         grenade.GetComponent<GrenadeController>().AimAtPlayer();
 
+        anim.SetBool("throwingGrenade", true);
+
         yield return new WaitForSeconds(3 * attackDelay);
+        anim.SetBool("throwingGrenade", false);
         isAttacking = false;
         gunPivot.gameObject.SetActive(true);
     }
@@ -321,6 +379,9 @@ public class SecurityMovement : MonoBehaviour
     {
         anim.SetBool("isWalking", false);
         anim.SetBool("isCharging", true);
+
+        collider.size = chargeColliderSize;
+        collider.offset = chargeColliderOffset;
         //Debug.Log("Here!");
 
         gunPivot.gameObject.SetActive(false);
@@ -352,6 +413,11 @@ public class SecurityMovement : MonoBehaviour
             }
             abortTime += Time.deltaTime;
             if(abortTime > 3f)
+            {
+                doneChargeAttack = true;
+            }
+
+            if (holeInFront())
             {
                 doneChargeAttack = true;
             }
@@ -393,11 +459,14 @@ public class SecurityMovement : MonoBehaviour
         */
         //yield return new WaitForSeconds(2);
 
+        gunPivot.gameObject.SetActive(true);
         Debug.Log("Charge attack finished");
         anim.SetBool("isCharging", false);
+        collider.size = originalColliderSize;
+        collider.offset = originalColliderOffset;
         yield return new WaitForSeconds(2 * attackDelay);
         isAttacking = false;
-        gunPivot.gameObject.SetActive(true);
+        
         //Add a little cooldown
         
     }
@@ -428,5 +497,17 @@ public class SecurityMovement : MonoBehaviour
         return cast.collider != null;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //If the animator is currently the enemy charging, then that will deal with the damage, so ignore
+        if (collision.gameObject.tag == "Player" && !anim.GetBool("isCharging") && timeSincePrevTouch > touchDamageCooldown)
+        {
+            collision.gameObject.GetComponent<PlayerHealth>().playerAttacked(3);
+            Debug.Log("Player lost health for touching security guard");
+            Debug.Log($"Collision with {collision.gameObject.name} at {Time.time}");
+            timeSincePrevTouch = 0;
+        }
+
+    }
 
 }
