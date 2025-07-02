@@ -12,8 +12,9 @@ public class PterodactylMovement : MonoBehaviour
     [SerializeField] private GameObject spriteObject;
 
     [Space(10)]
-    [Header("Generalized Attack Values")]
+    [Header("Generalized Damage Values")]
     [SerializeField] private float damageTaken = 10f;
+    [SerializeField] private float maxHealth = 100f;
 
     [Space(10)]
     [Header("Generalized Attack Values")]
@@ -83,7 +84,7 @@ public class PterodactylMovement : MonoBehaviour
     bool isScreeching;
     bool isAtVector;
     float pterodactylDesiredYPosition; // Holds the YValue that the pterodactyl floats at
-
+    private float currentHealth;
     private void Start()
     {
         attackTimer = swoopAttackTime;
@@ -92,6 +93,8 @@ public class PterodactylMovement : MonoBehaviour
         hitObject = false;
         pterodactylDesiredYPosition = transform.position.y;
         attack = Attacks.None;
+        currentHealth = maxHealth;
+        GetComponentInChildren<HealthBar>().SetMaxHealth((int) maxHealth);
         StartCoroutine(Idle());
     }
 
@@ -139,9 +142,13 @@ public class PterodactylMovement : MonoBehaviour
         if (collision.gameObject.layer == 6)
         {
             if (attack == Attacks.Swoop)
+            {
                 player.GetComponent<PlayerHealth>().playerAttacked(playerSwoopDamage);
+            }
             else if (attack == Attacks.Dive)
+            {
                 player.GetComponent<PlayerHealth>().playerAttacked(playerDiveDamage);
+            }
         }
 
         hitObject = true;
@@ -150,8 +157,14 @@ public class PterodactylMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 8)
-            GetComponent<EnemyHealth>().enemyAttacked(damageTaken);
+        {
+            GetComponentInChildren<EnemyHealth>().enemyAttacked(8f);
+            currentHealth = currentHealth - 10f;
 
+            GetComponentInChildren<HealthBar>().getHealth();
+            GetComponentInChildren<HealthBar>().SetHealth((int)(currentHealth));
+            
+        }
     }
 
     /**

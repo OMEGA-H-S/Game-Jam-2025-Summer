@@ -14,11 +14,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: f93ae09f416020a428771ff0aacd8dd8, type: 2}
     - target: {fileID: 3754583187467849567, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: m_Name
-      value: PterodactylMedium Variant
+      value: PterodactylMedium
       objectReference: {fileID: 0}
     - target: {fileID: 5046135442675676137, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.54
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 5046135442675676137, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -71,6 +71,10 @@ PrefabInstance:
     - target: {fileID: 8567062680511495594, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: diveSpeed
       value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8567062680511495594, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: maxHealth
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8567062680511495594, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: boostSpeed

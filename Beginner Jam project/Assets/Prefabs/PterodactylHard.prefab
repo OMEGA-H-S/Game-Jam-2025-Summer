@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 2939bebff201f784e9457adbd04f3337, type: 2}
     - target: {fileID: 3754583187467849567, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: m_Name
-      value: PterodactylHard Variant
+      value: PterodactylHard
       objectReference: {fileID: 0}
     - target: {fileID: 5046135442675676137, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: m_LocalPosition.x
