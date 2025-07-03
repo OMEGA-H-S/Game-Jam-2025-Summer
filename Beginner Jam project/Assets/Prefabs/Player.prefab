@@ -206,8 +206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f387edd60657554e8ef9842a096135e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12.7
-  jumpHeight: 30.9
+  speed: 18.3
+  jumpHeight: 32.3
   gunPivot: {fileID: 8561684784951556134}
   groundLayer:
     serializedVersion: 2
@@ -270,6 +270,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2602046735412831623}
     m_Modifications:
+    - target: {fileID: 754502266958420933, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 754502266958420933, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 754502266958420933, guid: a2677a626c7d21c4cbc300b01d49f00d, type: 3}
       propertyPath: m_Sprite
       value: 

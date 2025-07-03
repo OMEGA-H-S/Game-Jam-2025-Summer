@@ -56,7 +56,7 @@ public class LaserController : MonoBehaviour
                 Debug.Log("Enemy lost 2 health");
             }
         }
-
+        Debug.Log("I have collided");
         Destroy(this.gameObject);   
 
     }
