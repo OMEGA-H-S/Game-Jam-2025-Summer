@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -22,12 +23,14 @@ public class PlayerHealth : MonoBehaviour
         if(playerHealth < 0)
         {
             playerHealth = 0;
+            SceneManager.LoadScene("Home");
+
         }
         if (playerHealth > 100)
         {
             playerHealth = 100;
         }
-
+        
         bar.SetHealth((int)playerHealth);
     }
 
