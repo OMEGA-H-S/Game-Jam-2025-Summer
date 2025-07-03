@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -36,11 +35,6 @@ public class CameraMovement : MonoBehaviour
         //Preventing camera from going too far in some direction
         camLoc = new Vector3(Mathf.Clamp(camLoc.x, xBounds.x, xBounds.y), Mathf.Clamp(camLoc.y, yBounds.x, yBounds.y), -10);
         transform.position = camLoc;
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene("Home");
-        }
         
     }
 }
