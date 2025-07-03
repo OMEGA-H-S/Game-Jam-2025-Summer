@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector2 crouchOffset, standingOffset;
     [SerializeField] private Vector2 crouchSize, standingSize;
     [SerializeField] private AudioClip walkingSound;
+    [SerializeField] private AudioClip jumpSound;
     bool isWalking = false;
     private BoxCollider2D collider;
 
@@ -99,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (pendingJump)
         {
+            SoundEffectsManager.instance.PlaySoundEffectClip(jumpSound, transform, 1f);
             body.velocity = new Vector2(body.velocity.x, jumpHeight);
             pendingJump = false;
         

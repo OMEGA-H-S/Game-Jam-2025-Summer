@@ -19,7 +19,7 @@ public class GunController : MonoBehaviour
 
     [SerializeField] private PlayerHealth anim;
 
-
+    [SerializeField] private AudioClip shootingSound;
     private void Awake()
     {
         pivot = transform.parent;
@@ -116,6 +116,7 @@ public class GunController : MonoBehaviour
 
     protected void SpawnLaser()
     {
+        SoundEffectsManager.instance.PlaySoundEffectClip(shootingSound, transform, 1f);
         anim.playerShooting();
         float angle = pivot.eulerAngles.z;
         if(invertLaser)

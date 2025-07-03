@@ -9,6 +9,7 @@ public class PotionController : MonoBehaviour
     private float increment = 0.05f;
     [SerializeField] private float timeBetweenMovement = 0.01f;
     [SerializeField] private int keyCode;
+    [SerializeField] private AudioClip collected;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +47,7 @@ public class PotionController : MonoBehaviour
         //Communicate with player collectible script
         if (collision.gameObject.name == "Player")
         {
+            SoundEffectsManager.instance.PlaySoundEffectClip(collected, transform, 1f);
             PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
             player.playerAttacked(-10);
             GameObject.Destroy(this.gameObject);
