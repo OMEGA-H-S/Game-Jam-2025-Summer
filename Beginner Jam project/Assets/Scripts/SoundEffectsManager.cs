@@ -11,7 +11,7 @@ public class SoundEffectsManager : MonoBehaviour
     {
         instance = this;
     }
-
+    
     public void PlaySoundEffectClip(AudioClip audioCLip, Transform spawnTransform, float volume)
     {
         AudioSource audioSource = Instantiate(soundEffectObject, spawnTransform.position, Quaternion.identity);
