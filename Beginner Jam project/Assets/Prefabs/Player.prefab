@@ -218,8 +218,8 @@ MonoBehaviour:
   standingOffset: {x: -0.2699664, y: -0.07994092}
   crouchSize: {x: 1.653803, y: 1.736479}
   standingSize: {x: 1.009531, y: 3.168197}
-  walkingSound: {fileID: 0}
   jumpSound: {fileID: 8300000, guid: 2e1f0e0e1def0324f982c9e92b42c0f8, type: 3}
+  walkSound: {fileID: 8300000, guid: 4421d0f122247df4b9e5fbea978f7171, type: 3}
 --- !u!114 &2113879181978114689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,6 +497,7 @@ MonoBehaviour:
   timeBetweenShot: 0.29
   bulletLocation: {fileID: 5549346806156900668}
   anim: {fileID: 841262673685323671}
+  shootingSound: {fileID: 8300000, guid: ced9dd784f856334d9481023d8ccf08f, type: 3}
 --- !u!95 &5935555646830296880
 Animator:
   serializedVersion: 5
