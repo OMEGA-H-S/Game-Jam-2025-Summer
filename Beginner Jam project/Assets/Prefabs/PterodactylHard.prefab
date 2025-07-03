@@ -68,6 +68,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 9613d47d7cf37fb458e74c9b3236df8c, type: 3}
+    - target: {fileID: 7495735514088389312, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495735514088389312, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495735514088389312, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7924528
+      objectReference: {fileID: 0}
     - target: {fileID: 8567062680511495594, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: diveSpeed
       value: 100
@@ -99,6 +111,18 @@ PrefabInstance:
     - target: {fileID: 8567062680511495594, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
       propertyPath: timeBeforeDiving
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994985507097413003, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Color.b
+      value: 0.52787966
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994985507097413003, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Color.g
+      value: 0.4669811
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994985507097413003, guid: dd3340bf8246f4d46b1951d239d4496a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

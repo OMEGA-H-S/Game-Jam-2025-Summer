@@ -52,6 +52,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   spriteObject: {fileID: 7047746846600638949}
+  swoop: {fileID: 8300000, guid: 273e1dee4ae439b40b655af6b3dc89d8, type: 3}
+  screech: {fileID: 8300000, guid: d5bc304b94676a34da52a972712f47af, type: 3}
+  dive: {fileID: 8300000, guid: ed4273bc0e5bf1c4ab486b0ac725db85, type: 3}
+  diveScreech: {fileID: 8300000, guid: a9a599b5cc83e184a83c52497c049f53, type: 3}
+  flapSound: {fileID: 8300000, guid: 4d8692d9c00cbbd49b2c348eaea05988, type: 3}
+  damageSound: {fileID: 8300000, guid: 87a22c7bd349ab34ab52fcedabbd6e15, type: 3}
+  deathSound: {fileID: 0}
   damageTaken: 10
   maxHealth: 100
   attackError: 0.2
@@ -321,6 +328,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5046135442675676137}
     m_Modifications:
+    - target: {fileID: 4613594537110072182, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_Color.b
+      value: 0.46524566
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613594537110072182, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613594537110072182, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_Color.r
+      value: 0.49034896
+      objectReference: {fileID: 0}
     - target: {fileID: 7609934110819671879, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
       propertyPath: m_Name
       value: Canvas

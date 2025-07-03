@@ -12,9 +12,9 @@ public class SpikeBushController : MonoBehaviour
     [SerializeField] private float drag = 50f;
     [SerializeField] private float playerDamage = 5f;
 
+    [SerializeField] private AudioClip bushSound;
+
     private bool inBush;
-
-
     private void Start()
     {
         inBush = false;
@@ -51,6 +51,7 @@ public class SpikeBushController : MonoBehaviour
             // Run a timer to make the player take ticks of damage
             if (timer <= 0)
             {
+                SoundEffectsManager.instance.PlaySoundEffectClip(bushSound, transform, 0.3f);
                 player.GetComponent<PlayerHealth>().playerAttacked(playerDamage);
                 timer = hurtTimer;
             } else

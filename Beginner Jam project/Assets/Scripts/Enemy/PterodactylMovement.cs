@@ -10,6 +10,13 @@ public class PterodactylMovement : MonoBehaviour
     [Header("Necessities")]
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject spriteObject;
+    [SerializeField] private AudioClip swoop;
+    [SerializeField] private AudioClip screech;
+    [SerializeField] private AudioClip dive;
+    [SerializeField] private AudioClip diveScreech;
+    [SerializeField] private AudioClip flapSound;
+    [SerializeField] private AudioClip damageSound;
+    [SerializeField] private AudioClip deathSound;
 
     [Space(10)]
     [Header("Generalized Damage Values")]
@@ -121,6 +128,7 @@ public class PterodactylMovement : MonoBehaviour
                 }
                 else if (random == 1)
                 {
+                    SoundEffectsManager.instance.PlaySoundEffectClip(dive, transform, 1f);
                     attackTimer = diveAttackTime;
                     state = PterodactylState.Attacking;
                     attack = Attacks.Dive;
@@ -162,6 +170,11 @@ public class PterodactylMovement : MonoBehaviour
             currentHealth = currentHealth - 10f;
 
             GetComponentInChildren<HealthBar>().SetHealth((int)(currentHealth));
+
+            if (currentHealth == 0)
+                SoundEffectsManager.instance.PlaySoundEffectClip(deathSound, transform, 0.5f);
+            else
+                SoundEffectsManager.instance.PlaySoundEffectClip(damageSound, transform, 0.5f);
         }
     }
 
@@ -208,13 +221,13 @@ public class PterodactylMovement : MonoBehaviour
         // If the transform has gotten to where it needs to go
         if ((Mathf.Abs(transform.position.y - verticalMovementVector.y) < attackError))
         {
+            SoundEffectsManager.instance.PlaySoundEffectClip(swoop, transform, 0.4f);
             state = PterodactylState.Resetting; // Set the pterodactyl to reset
             
             // Finds the direction the pterodactyl needs to fling towards and "boosts"
             float direction = (player.transform.position - transform.position).x / Mathf.Abs((player.transform.position - transform.position).x);
             rb.velocity = new Vector3(direction * boostSpeed, 0);
-            GetComponentInChildren<SpriteCorrector>().endSwoop();
-        }
+            GetComponentInChildren<SpriteCorrector>().endSwoop();        }
     }
 
     /**
@@ -385,6 +398,7 @@ public class PterodactylMovement : MonoBehaviour
      */
     IEnumerator DiveDelay()
     {
+        SoundEffectsManager.instance.PlaySoundEffectClip(diveScreech, transform, 0.5f);
         yield return new WaitForSeconds(timeBeforeDiving);
 
         state = PterodactylState.Resetting;
@@ -417,7 +431,7 @@ public class PterodactylMovement : MonoBehaviour
         {
 
             // if we are at the end bounds of our y level movement change the direction
-            if (desiredVector3 == transform.position) 
+            if (desiredVector3 == transform.position)
             {
                 isUp = !isUp;
                 if (isUp)
@@ -428,7 +442,8 @@ public class PterodactylMovement : MonoBehaviour
                 {
                     desiredVector3 = new Vector3(player.transform.position.x + screechDistance, transform.position.y + 4f);
                 }
-            } else
+            }
+            else
             {
                 desiredVector3 = new Vector3(player.transform.position.x + screechDistance, desiredVector3.y);
             }
@@ -436,13 +451,14 @@ public class PterodactylMovement : MonoBehaviour
             if (timer <= 0)
             {
                 timer = screechTime;
+                SoundEffectsManager.instance.PlaySoundEffectClip(screech, transform, 0.5f);
                 GetComponentInChildren<ScreechController>().SpawnObject(isUp, pterodactylDesiredYPosition);
             }
             else
                 timer -= Time.deltaTime;
 
-                // Move
-                moveTowards = Vector3.MoveTowards(transform.position, desiredVector3, yMovementSpeed * Time.fixedDeltaTime);
+            // Move
+            moveTowards = Vector3.MoveTowards(transform.position, desiredVector3, yMovementSpeed * Time.fixedDeltaTime);
             rb.MovePosition(moveTowards);
             yield return null;
         }

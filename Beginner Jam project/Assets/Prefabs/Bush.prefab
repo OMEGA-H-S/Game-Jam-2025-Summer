@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 739436b2bf3907f44a48a5073c5ba872, type: 3}
-  m_Color: {r: 0.35660422, g: 0.8584906, b: 0.19032574, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   hurtTimer: 1
   drag: 50
   playerDamage: 5
+  bushSound: {fileID: 8300000, guid: b4700ec02fd2eb3499af21e85bf91eb4, type: 3}
 --- !u!70 &7309634102604796302
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
