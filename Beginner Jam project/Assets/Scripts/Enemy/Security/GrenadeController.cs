@@ -11,12 +11,9 @@ public class GrenadeController : MonoBehaviour
     private Animator animator;
 
     [SerializeField] private float blastRadius = 12f;
-    [SerializeField] private AudioClip explosion;
-    [SerializeField] private AudioClip deploy;
 
     private void Awake()
     {
-        SoundEffectsManager.instance.PlaySoundEffectClip(deploy, transform, 1f);
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         //Debug.Log(player == null);
@@ -65,7 +62,6 @@ public class GrenadeController : MonoBehaviour
 
     private void aboutToExplode()
     {
-        SoundEffectsManager.instance.PlaySoundEffectClip(explosion, transform, 1f);
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
         transform.localScale = new Vector3(8, 8, 8);
