@@ -7,8 +7,63 @@ using UnityEngine.UIElements;
 
 public class PterodactylMovement : MonoBehaviour
 {
+    [Header("Necessities")]
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject spriteObject;
+    [SerializeField] private AudioClip swoop;
+    [SerializeField] private AudioClip screech;
+    [SerializeField] private AudioClip dive;
+    [SerializeField] private AudioClip diveScreech;
+    [SerializeField] private AudioClip flapSound;
+    [SerializeField] private AudioClip damageSound;
+    [SerializeField] private AudioClip deathSound;
+
+    [Space(10)]
+    [Header("Generalized Damage Values")]
+    [SerializeField] private float damageTaken = 10f;
+    [SerializeField] private float maxHealth = 100f;
+
+    [Space(10)]
+    [Header("Generalized Attack Values")]
+    [Tooltip("Determines how far off of an x or y value can be for all attacks to start")]
+    [SerializeField] private float attackError = 0.2f;
+    [Tooltip("The Speed that the Pterodactyl resets to the Y position")]
+    [SerializeField] private float yFloatingUpSpeed = 10f;
+
+
+    [Space(10)]
+    [Header("Swoop Values")]
+    [Tooltip("The amount of time the swoop attack has before resetting")]
+    [SerializeField] private float swoopAttackTime = 1f;
+    [SerializeField] private float boostSpeed = 60f;
+    [SerializeField] private float descendSpeed = 0.1f;
+    [SerializeField] private float playerSwoopDamage = 10f;
+
+    [Space(10)]
+    [Header("Dive Values")]
+    [Tooltip("Value the pterodactyl needs to get up to before diving")]
+    [SerializeField] private float aboveYValue = 17f; 
+    [SerializeField] private float ascentSpeed = 5f;
+    [Tooltip("The amount of time the dive attack has before resetting")]
+    [SerializeField] private float diveAttackTime = 5f;
+    [SerializeField] private float diveSpeed = 100f;
+    [SerializeField] private float timeBeforeDiving = 0.7f;
+    [SerializeField] private float playerDiveDamage = 30f;
+
+    [Space(10)]
+    [Header("Screech Values")]
+    [SerializeField] private float descentSpeed = 0.4f;
+    [Tooltip("The amount of time the screech attack has before resetting")]
+    [SerializeField] private float screechAttackTime = 5f;
+    [SerializeField] private float screechDistance = 15f; 
+    [SerializeField] private float screechTime = 1.5f;
+    [Tooltip("Speed that the pterodactyl moves on the y while atatacking")]
+    [SerializeField] private float yMovementSpeed = 8f;
+    
+    [Space(10)]
+    [Header("Idle Values")]
+    [SerializeField] private float idleHorizontalSpeed = 5f;
+
     private Rigidbody2D rb;
 
     private PterodactylState state;
@@ -19,11 +74,13 @@ public class PterodactylMovement : MonoBehaviour
         Resetting
     }
 
+    private Attacks attack;
     private enum Attacks
     {
         Swoop,
         Dive,
-        Screech
+        Screech,
+        None
     }
     
     // Utility Variables
@@ -31,23 +88,20 @@ public class PterodactylMovement : MonoBehaviour
     bool hitObject;
     bool isSwooping;
     bool isDiving;
-
     bool isScreeching;
     bool isAtVector;
-
-    // Changable Values
-    private float boostAttackTime = 1f; // Determines how long the pterodactyl boosts for
-    float pterodactylDesiredYPosition = 2.9f; // Holds the YValue that the pterodactyl floats at
-    float yFloatingUpSpeed = 10f; // The Speed that the Pterodactyl resets to the Y position
-    float screechDistance = 15f; // Distance the pterodactyl keeps from player while screeching
-
-
+    float pterodactylDesiredYPosition; // Holds the YValue that the pterodactyl floats at
+    private float currentHealth;
     private void Start()
     {
-        attackTimer = boostAttackTime;
+        attackTimer = swoopAttackTime;
         rb = GetComponent<Rigidbody2D>();
         state = PterodactylState.Idle;
         hitObject = false;
+        pterodactylDesiredYPosition = transform.position.y;
+        attack = Attacks.None;
+        currentHealth = maxHealth;
+        GetComponentInChildren<HealthBar>().SetMaxHealth((int) maxHealth);
         StartCoroutine(Idle());
     }
 
@@ -58,44 +112,70 @@ public class PterodactylMovement : MonoBehaviour
         // if the player is within the max attack distance
         if (Mathf.Abs(player.transform.position.x - transform.position.x) < maximumAttackDistance || state != PterodactylState.Idle)
 
-            // TODO Placeholder for which attack the pterodactyl does
-            if (false)
+            if (Random.Range(0, 50) == 1 && state == PterodactylState.Idle)
             {
-                // If the pterodactyl is idle and a 1 in 100 chance hits
-                if (Random.Range(0, 100) == 1 && state == PterodactylState.Idle)
+                int random = Random.Range(0,3);
+
+                // TODO Placeholder for which attack the pterodactyl does
+                if (random == 0)
                 {
+                    attackTimer = swoopAttackTime;
                     StopCoroutine(Idle());
                     state = PterodactylState.Attacking;
-                }
-
-                // If the pterodactyl is attacking or resetting from one and it's not already swooping, start the swoop coroutine
-                if ((state != PterodactylState.Idle) && !isSwooping)
-                {
-                    isSwooping = true;
+                    attack = Attacks.Swoop;
                     StartCoroutine(SwoopCoroutine()); // Start Swooping
+                    GetComponentInChildren<SpriteCorrector>().startSwoop();
                 }
-            } else if (false) 
-            {
-
-                if (Random.Range(0, 100) == 1 && state == PterodactylState.Idle)
+                else if (random == 1)
                 {
-                    attackTimer = 5f;
+                    SoundEffectsManager.instance.PlaySoundEffectClip(dive, transform, 1f);
+                    attackTimer = diveAttackTime;
                     state = PterodactylState.Attacking;
+                    attack = Attacks.Dive;
                     StartCoroutine(DiveCoroutiune());
+
                 }
-            } else
-            {
-                if (Random.Range(0, 100) == 1 && state == PterodactylState.Idle)
+                else
                 {
-                    attackTimer = 5f;
+                    GetComponentInChildren<SpriteCorrector>().startScreech();
+                    attackTimer = screechAttackTime;
                     state = PterodactylState.Attacking;
+                    attack = Attacks.Screech;
                     StartCoroutine(ScreechCoroutine());
                 }
             }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.layer == 6)
+        {
+            if (attack == Attacks.Swoop)
+            {
+                player.GetComponent<PlayerHealth>().playerAttacked(playerSwoopDamage);
+            }
+            else if (attack == Attacks.Dive)
+            {
+                player.GetComponent<PlayerHealth>().playerAttacked(playerDiveDamage);
+            }
+        }
+
         hitObject = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 8)
+        {
+            GetComponentInChildren<EnemyHealth>().enemyAttacked(8f);
+            currentHealth = currentHealth - 10f;
+
+            GetComponentInChildren<HealthBar>().SetHealth((int)(currentHealth));
+
+            if (currentHealth == 0)
+                SoundEffectsManager.instance.PlaySoundEffectClip(deathSound, transform, 0.5f);
+            else
+                SoundEffectsManager.instance.PlaySoundEffectClip(damageSound, transform, 0.5f);
+        }
     }
 
     /**
@@ -115,6 +195,7 @@ public class PterodactylMovement : MonoBehaviour
             {
                 if (attackTimer <= 0 || hitObject)
                 {
+                    GetComponentInChildren<SpriteCorrector>().endSwoop();
                     ResetPterodactyl(pterodactylDesiredYPosition, yFloatingUpSpeed);
                 }
                 else
@@ -130,23 +211,23 @@ public class PterodactylMovement : MonoBehaviour
      */
     private void Boost()
     {
-        float boostSpeed = 30f;
-        float descendSpeed = 0.1f;
+        float aboveGroundSwoopYLevel = 0.3f;
 
         // Moves the pterodactyl to the correct y position of where the player is
-        Vector3 verticalMovementVector = new Vector3(transform.position.x, player.transform.position.y + 0.3f);
+        Vector3 verticalMovementVector = new Vector3(transform.position.x, player.transform.position.y + aboveGroundSwoopYLevel);
         Vector3 newPosition = Vector3.MoveTowards(transform.position, verticalMovementVector, descendSpeed);
         rb.MovePosition(newPosition);
         
         // If the transform has gotten to where it needs to go
-        if (transform.position == verticalMovementVector)
+        if ((Mathf.Abs(transform.position.y - verticalMovementVector.y) < attackError))
         {
+            SoundEffectsManager.instance.PlaySoundEffectClip(swoop, transform, 0.4f);
             state = PterodactylState.Resetting; // Set the pterodactyl to reset
             
             // Finds the direction the pterodactyl needs to fling towards and "boosts"
             float direction = (player.transform.position - transform.position).x / Mathf.Abs((player.transform.position - transform.position).x);
             rb.velocity = new Vector3(direction * boostSpeed, 0);
-        }
+            GetComponentInChildren<SpriteCorrector>().endSwoop();        }
     }
 
     /**
@@ -154,21 +235,19 @@ public class PterodactylMovement : MonoBehaviour
      */
     private void Dive()
     {
-        float aboveYValue = 17f; // Value the pterodactyl needs to get up to before diving
-
         // if attacking
-        if (state == PterodactylState.Attacking)
+        if (state == PterodactylState.Attacking && !hitObject)
         {
 
             // Move to the y position over the player
             Vector3 desiredDiveVector3 = new Vector3(player.transform.position.x, aboveYValue);
-            Vector3 diveVector = Vector3.MoveTowards(transform.position, desiredDiveVector3, 1f);
+            Vector3 diveVector = Vector3.MoveTowards(transform.position, desiredDiveVector3, ascentSpeed * Time.deltaTime);
             if (!isDiving) {
                 rb.MovePosition(diveVector);
             }
 
             // If we've reached the hight and we aren't diving yet
-            if (transform.position == desiredDiveVector3 && !isDiving)
+            if ((Mathf.Abs(transform.position.x - desiredDiveVector3.x) < attackError && transform.position.y == desiredDiveVector3.y) && !isDiving)
             {
                 // stop the movement, and delay the dive
                 rb.velocity = Vector3.zero;
@@ -178,7 +257,8 @@ public class PterodactylMovement : MonoBehaviour
         } else
         {
             // If the attack timer is done, reset the pteroactyl
-            if (attackTimer <= 0) {
+            if (attackTimer <= 0 || hitObject) {
+                GetComponentInChildren<SpriteCorrector>().endDive();
                 ResetPterodactyl(pterodactylDesiredYPosition, yFloatingUpSpeed);
             } else
             {
@@ -199,6 +279,7 @@ public class PterodactylMovement : MonoBehaviour
         }
         else
         {
+            GetComponentInChildren<SpriteCorrector>().endScreech();
             ResetPterodactyl(pterodactylDesiredYPosition, yFloatingUpSpeed); // Reset Portion
         }
     }
@@ -210,26 +291,23 @@ public class PterodactylMovement : MonoBehaviour
      */
     private void Screech()
     {
-        float descentSpeed = 0.4f;
-
         // Make the Pterodactyl face the enemy
         spriteObject.GetComponent<SpriteCorrector>().makeFacePlayer();
 
         // Move the pterodactyl to the same y level as the player while keeping {screechDistance} from the player
-        Vector3 desiredVector3 = new Vector3(player.transform.position.x + screechDistance, player.transform.position.y + 0.3f);
+        Vector3 desiredVector3 = new Vector3(player.transform.position.x + screechDistance, player.transform.position.y);
         Vector3 moveTowardsVectorWithY = Vector3.MoveTowards(transform.position, desiredVector3, descentSpeed);
         if (!isAtVector)
             rb.MovePosition(moveTowardsVectorWithY);
       
         // If we are at or have gone to the desired vector3
-        if ((desiredVector3.x - transform.position.x < 0.2 && desiredVector3.y == transform.position.y) || isAtVector)
+        if ((desiredVector3.x - transform.position.x < attackError && desiredVector3.y == transform.position.y) || isAtVector)
         {
             isAtVector = true;
             if (attackTimer > 0 && !isScreeching) // Start coroutines and update screeching bool
             { // Only runs on first update
                 isScreeching = true;
-                StartCoroutine(ScreechDelaySpawn());
-                StartCoroutine(ScreechMovement());
+                StartCoroutine(ScreechMovementSpawn());
             }
             else if (attackTimer > 0) // Decrease attack timer if screeching
             {
@@ -259,12 +337,13 @@ public class PterodactylMovement : MonoBehaviour
         else
         {
             rb.velocity = Vector3.zero;
-            attackTimer = boostAttackTime;
+            attackTimer = swoopAttackTime;
             state = PterodactylState.Idle;
             isSwooping = false;
             isDiving = false;
             isScreeching = false;
             hitObject = false;
+            attack = Attacks.None;
             StopAllCoroutines();
             StartCoroutine(Idle());
         }
@@ -276,7 +355,6 @@ public class PterodactylMovement : MonoBehaviour
      */
     IEnumerator Idle()
     {
-        float idleHorizontalSpeed = 5f; // Controls the horizontal idle speed
         bool isRight = false; // Determines if the pterodactyl is going right or not
         
         while (state == PterodactylState.Idle)
@@ -320,12 +398,13 @@ public class PterodactylMovement : MonoBehaviour
      */
     IEnumerator DiveDelay()
     {
-        float diveSpeed = 40f;
-
-        yield return new WaitForSeconds(0.7f);
+        SoundEffectsManager.instance.PlaySoundEffectClip(diveScreech, transform, 0.5f);
+        yield return new WaitForSeconds(timeBeforeDiving);
 
         state = PterodactylState.Resetting;
-        rb.velocity = new Vector2(0, -diveSpeed);
+        rb.velocity = Vector3.zero;
+        rb.AddForce(new Vector2(0, - diveSpeed), ForceMode2D.Impulse);
+        GetComponentInChildren<SpriteCorrector>().startDive();
 
     }
 
@@ -339,31 +418,20 @@ public class PterodactylMovement : MonoBehaviour
     }
 
     /**
-     * Delays the pterodactyl screech spawning.
-     */
-    IEnumerator ScreechDelaySpawn()
-    {
-        while (state == PterodactylState.Attacking)
-        {
-            GetComponentInChildren<ScreechController>().SpawnObject();
-            yield return new WaitForSeconds(1f);
-        }
-    }
-
-    /**
      * Deals with the movement of the pterodactyl when screeching.
      */
-    IEnumerator ScreechMovement()
+    IEnumerator ScreechMovementSpawn()
     {
         bool isUp = true;
-        float yMovementSpeed = 6f;
+        float timer = screechTime;
 
         Vector3 desiredVector3 = transform.position;
         Vector3 moveTowards;
         while (state == PterodactylState.Attacking)
         {
+
             // if we are at the end bounds of our y level movement change the direction
-            if (desiredVector3 == transform.position) 
+            if (desiredVector3 == transform.position)
             {
                 isUp = !isUp;
                 if (isUp)
@@ -374,10 +442,20 @@ public class PterodactylMovement : MonoBehaviour
                 {
                     desiredVector3 = new Vector3(player.transform.position.x + screechDistance, transform.position.y + 4f);
                 }
-            } else
+            }
+            else
             {
                 desiredVector3 = new Vector3(player.transform.position.x + screechDistance, desiredVector3.y);
             }
+
+            if (timer <= 0)
+            {
+                timer = screechTime;
+                SoundEffectsManager.instance.PlaySoundEffectClip(screech, transform, 0.5f);
+                GetComponentInChildren<ScreechController>().SpawnObject(isUp, pterodactylDesiredYPosition);
+            }
+            else
+                timer -= Time.deltaTime;
 
             // Move
             moveTowards = Vector3.MoveTowards(transform.position, desiredVector3, yMovementSpeed * Time.fixedDeltaTime);
