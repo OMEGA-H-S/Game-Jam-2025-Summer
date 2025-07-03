@@ -84,6 +84,8 @@ public class SecurityMovement : MonoBehaviour
         originalColliderSize = collider.size;
         originalColliderOffset = collider.offset;
 
+        Debug.Log("Difficulty: " + (guardDifficulty == Difficulty.Easy));
+
         if(guardDifficulty == Difficulty.Easy)
         {
             radius = 4f;
@@ -96,7 +98,7 @@ public class SecurityMovement : MonoBehaviour
             anim.SetTrigger("Green");
             StartCoroutine(armAnimationDelay("Green"));
         }
-        if(guardDifficulty == Difficulty.Medium)
+        else if(guardDifficulty == Difficulty.Medium)
         {
             this.radius = 7f;
             targetDistance = 22f;
@@ -129,7 +131,10 @@ public class SecurityMovement : MonoBehaviour
             dodgeFreq = 1f;
             attackDelay = 0.7f;
             color = "Red";
+            Debug.Log("Executing this part");
         }
+
+        Debug.Log("Color: " + color);
 
         
 
