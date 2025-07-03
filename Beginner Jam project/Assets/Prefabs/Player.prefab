@@ -374,6 +374,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231a6da5acbf1d64fb835922f9c8e827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intro: {fileID: 0}
+  loop: {fileID: 0}
+  source: {fileID: 434066079889135774}
 --- !u!1001 &4777535189947975141
 PrefabInstance:
   m_ObjectHideFlags: 0
