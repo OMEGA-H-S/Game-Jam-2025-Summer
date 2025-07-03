@@ -13,6 +13,8 @@ public class SecurityGunController : MonoBehaviour
 
     [SerializeField] private GameObject laser;
 
+    [SerializeField] private Transform bulletSpawn;
+
     private void Start()
     {
         pivot = transform.parent;
@@ -111,7 +113,7 @@ public class SecurityGunController : MonoBehaviour
             angle += 180;
             angle = normalizedAngle(angle);
         }
-        GameObject bullet = Instantiate(laser, transform.position, Quaternion.Euler(new Vector3(0, 0, angle)));
+        GameObject bullet = Instantiate(laser, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, angle)));
 
         bullet.GetComponentInChildren<LaserController>().setBulletOwner(LaserController.Owner.Enemy);
     }

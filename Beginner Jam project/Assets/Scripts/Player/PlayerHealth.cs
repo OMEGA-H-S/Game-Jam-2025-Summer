@@ -7,16 +7,18 @@ public class PlayerHealth : MonoBehaviour
     private float playerHealth = 100;
     private Animator playerAnimator;
     [SerializeField] private Animator armAnimator;
+    [SerializeField] private HealthBar bar;
 
     private void Start()
     {
         playerAnimator = GetComponent<Animator>();
+        bar.SetMaxHealth((int)playerHealth);
     }
 
     public void playerAttacked(float amount)
     {
         playerHealth -= amount;
-        Debug.Log("Health lost: " + amount + ", Health left: " + this.playerHealth);
+        
         if(playerHealth < 0)
         {
             playerHealth = 0;
@@ -25,6 +27,8 @@ public class PlayerHealth : MonoBehaviour
         {
             playerHealth = 100;
         }
+
+        bar.SetHealth((int)playerHealth);
     }
 
     public float getPlayerHealth()

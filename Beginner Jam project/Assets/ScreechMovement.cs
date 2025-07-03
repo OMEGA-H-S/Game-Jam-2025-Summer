@@ -23,4 +23,10 @@ public class ScreechMovement : MonoBehaviour
         if (moveTowardsVector == transform.position)
             Destroy(gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+            collision.gameObject.GetComponent<PlayerHealth>().playerAttacked(10);
+    }
 }

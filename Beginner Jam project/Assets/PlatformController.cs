@@ -101,7 +101,7 @@ public class PlatformController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            collision.transform.parent = this.transform;
+            StartCoroutine(nextFrameParentingParent(collision));
         }
     }
 
@@ -109,8 +109,21 @@ public class PlatformController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.transform.parent = null;
+
+            StartCoroutine(nextFrameParentingNull(collision));
         }
+    }
+
+    private IEnumerator nextFrameParentingNull(Collision2D collision)
+    {
+        yield return null;
+        collision.transform.parent = null;
+    }
+
+    private IEnumerator nextFrameParentingParent(Collision2D collision)
+    {
+        yield return null;
+        collision.transform.parent = this.transform;
     }
 
 

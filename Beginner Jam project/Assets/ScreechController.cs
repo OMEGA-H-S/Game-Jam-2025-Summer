@@ -6,8 +6,14 @@ public class ScreechController : MonoBehaviour
 {
     [SerializeField] GameObject screechObject;
 
-    public void SpawnObject()
+    public void SpawnObject(bool isUp, float yFloatLevel)
     {
-        Instantiate(screechObject, GetComponentInParent<Transform>().position, new Quaternion());
+        if (isUp)
+        {
+            Instantiate(screechObject, new Vector3(GetComponentInParent<Transform>().position.x, yFloatLevel - 1.9f), GetComponentInParent<Transform>().rotation);
+        } else
+        {
+            Instantiate(screechObject, new Vector3(GetComponentInParent<Transform>().position.x, yFloatLevel - 6f), GetComponentInParent<Transform>().rotation);
+        }
     }
 }
