@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerCollectibles : MonoBehaviour
 {
+    [SerializeField] private AudioClip keyCollected;
     private List<int> keysCollected;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,7 @@ public class PlayerCollectibles : MonoBehaviour
 
     public void KeyCollected(int keyCode)
     {
+        SoundEffectsManager.instance.PlaySoundEffectClip(keyCollected, transform, 1f);
         keysCollected.Add(keyCode);
     }
     public bool hasCode(int keyCode)
