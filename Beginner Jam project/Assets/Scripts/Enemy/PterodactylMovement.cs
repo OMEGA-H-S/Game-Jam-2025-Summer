@@ -455,7 +455,7 @@ public class PterodactylMovement : MonoBehaviour
             {
                 timer = screechTime;
                 SoundEffectsManager.instance.PlaySoundEffectClip(screech, transform, 0.5f);
-                GetComponentInChildren<ScreechController>().SpawnObject(isUp, pterodactylDesiredYPosition);
+                GetComponentInChildren<ScreechController>().SpawnObject(isUp, player.transform.position.y);
             }
             else
                 timer -= Time.deltaTime;

@@ -13,13 +13,7 @@ public class DinoHealth : MonoBehaviour
         healthBar.SetMaxHealth(currentHealth);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TakeDamage(5);
-        }
-    }
+   
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
@@ -29,6 +23,14 @@ public class DinoHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die();
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == 8) 
+        {
+            TakeDamage(5); 
+            Destroy(other.gameObject);
         }
     }
 

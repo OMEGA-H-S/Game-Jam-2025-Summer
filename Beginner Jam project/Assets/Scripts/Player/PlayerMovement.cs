@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Vector2 crouchOffset, standingOffset;
     [SerializeField] private Vector2 crouchSize, standingSize;
+    [SerializeField] private AudioClip walkingSound;
+    bool isWalking = false;
     private BoxCollider2D collider;
 
     private PlayerHealth anim;
@@ -88,8 +90,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            isWalking = false;
+            StopAllCoroutines();
             anim.playerMoving(false);
-            
+
         }
         
 
@@ -141,4 +145,11 @@ public class PlayerMovement : MonoBehaviour
 
 
 
+    IEnumerator WalkingAudio()
+    {
+        while (isWalking && isGrounded()) {
+            SoundEffectsManager.instance.PlaySoundEffectClip(walkingSound, transform, 1f);
+            yield return new WaitForSeconds(walkingSound.length);
+        }
+    }
 }
