@@ -390,6 +390,10 @@ public class SecurityMovement : MonoBehaviour
         GameObject grenade = Instantiate(grenadePrefab, transform.position + (Vector3)Vector2.up * 2, transform.rotation);
         //grenade.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 5, 0);
         grenade.GetComponent<GrenadeController>().AimAtPlayer();
+        if(guardDifficulty == Difficulty.Boss)
+        {
+            grenade.GetComponent<GrenadeController>().fasterGrenadeSpeed(2);
+        }
 
         anim.SetBool("throwingGrenade", true);
 
