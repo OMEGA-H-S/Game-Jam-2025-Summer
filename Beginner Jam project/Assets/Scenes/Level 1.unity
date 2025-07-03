@@ -7663,6 +7663,14 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 8.17
       objectReference: {fileID: 0}
+    - target: {fileID: 5149670751894066331, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: loop
+      value: 
+      objectReference: {fileID: 8300000, guid: bd5b6389d555a254f9951dd2f339865b, type: 3}
+    - target: {fileID: 5149670751894066331, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: intro
+      value: 
+      objectReference: {fileID: 8300000, guid: 665f0a12595d5c94f90e471a713fbde3, type: 3}
     - target: {fileID: 7187566607241313002, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: m_Name
       value: Player

@@ -12,6 +12,7 @@ public class MusicController : MonoBehaviour
     void Start()
     {
         source.clip = intro;
+        source.Play();
         StartCoroutine(playLoopable());
     }
 
