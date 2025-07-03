@@ -148,8 +148,8 @@ MonoBehaviour:
   attackDelay: 1
   gunAnim: {fileID: 5392150260170443034}
   guardDifficulty: 2
-  chargeColliderSize: {x: 0, y: 0}
-  chargeColliderOffset: {x: 0, y: 0}
+  chargeColliderSize: {x: 1.108192, y: 2.741127}
+  chargeColliderOffset: {x: 0.2921333, y: -0.2675607}
 --- !u!114 &332671606750615751
 MonoBehaviour:
   m_ObjectHideFlags: 0
