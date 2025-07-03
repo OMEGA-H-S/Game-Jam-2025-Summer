@@ -144,3 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorCode: 0
+  opening: {fileID: 8300000, guid: 8e2d21e1637050a4786ddd761b89e292, type: 3}
