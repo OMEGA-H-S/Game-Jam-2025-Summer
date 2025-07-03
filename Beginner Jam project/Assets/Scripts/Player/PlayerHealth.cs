@@ -27,7 +27,6 @@ public class PlayerHealth : MonoBehaviour
         {
             SoundEffectsManager.instance.PlaySoundEffectClip(death, transform, 1f);
             playerHealth = 0;
-            SceneManager.LoadScene("Home");
 
         }
         else
@@ -38,7 +37,7 @@ public class PlayerHealth : MonoBehaviour
         {
             playerHealth = 100;
         }
-        
+        SceneManager.LoadScene("Home");
         bar.SetHealth((int)playerHealth);
     }
 
