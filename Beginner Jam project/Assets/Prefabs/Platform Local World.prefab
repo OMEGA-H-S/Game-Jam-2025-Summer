@@ -179,7 +179,7 @@ MonoBehaviour:
   endVert: 5
   startHoriz: 0
   endHoriz: 5
-  platformSpeed: 4.5
-  directionCooldown: 1
+  platformSpeed: 8
+  directionCooldown: 0.5
   moveVertically: 0
   moveHorizically: 1
