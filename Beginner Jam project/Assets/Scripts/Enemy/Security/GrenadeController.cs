@@ -66,4 +66,9 @@ public class GrenadeController : MonoBehaviour
         GetComponent<Rigidbody2D>().simulated = false;
         transform.localScale = new Vector3(8, 8, 8);
     }
+
+    public void fasterGrenadeSpeed(float factor)
+    {
+        animator.speed = factor * animator.speed;
+    }
 }

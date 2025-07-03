@@ -2767,7 +2767,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1051256441561810603, guid: 3f97eb3c2dfe543478e51119cb8b2249, type: 3}
       propertyPath: endHoriz
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1051256441561810603, guid: 3f97eb3c2dfe543478e51119cb8b2249, type: 3}
       propertyPath: moveHorizically
@@ -2779,11 +2779,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3676835210043937126, guid: 3f97eb3c2dfe543478e51119cb8b2249, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3676835210043937126, guid: 3f97eb3c2dfe543478e51119cb8b2249, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.34
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
