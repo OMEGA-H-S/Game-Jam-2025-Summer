@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Fireball : MonoBehaviour
@@ -21,6 +22,15 @@ public class Fireball : MonoBehaviour
         if (direction.x < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<PlayerHealth>().playerAttacked(5);
+
+            Destroy(this.gameObject); 
         }
     }
 
