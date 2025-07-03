@@ -8,8 +8,6 @@ public class PlayerHealth : MonoBehaviour
     private Animator playerAnimator;
     [SerializeField] private Animator armAnimator;
     [SerializeField] private HealthBar bar;
-    [SerializeField] private AudioClip damage;
-    [SerializeField] private AudioClip death;
 
     private void Start()
     {
@@ -19,17 +17,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void playerAttacked(float amount)
     {
-
         playerHealth -= amount;
         
         if(playerHealth < 0)
         {
-            SoundEffectsManager.instance.PlaySoundEffectClip(death, transform, 1f);
             playerHealth = 0;
-        }
-        else
-        {
-            SoundEffectsManager.instance.PlaySoundEffectClip(damage, transform, 1f);
         }
         if (playerHealth > 100)
         {
