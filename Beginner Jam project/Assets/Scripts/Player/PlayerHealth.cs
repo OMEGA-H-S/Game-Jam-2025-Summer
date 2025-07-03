@@ -29,7 +29,7 @@ public class PlayerHealth : MonoBehaviour
             SceneManager.LoadScene("Home");
 
         }
-        else
+        else if (amount > 0)
         {
             SoundEffectsManager.instance.PlaySoundEffectClip(damage, transform, 1f);
         }
