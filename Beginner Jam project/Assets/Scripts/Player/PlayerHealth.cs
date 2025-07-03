@@ -23,13 +23,14 @@ public class PlayerHealth : MonoBehaviour
         if(playerHealth < 0)
         {
             playerHealth = 0;
+            SceneManager.LoadScene("Home");
 
         }
         if (playerHealth > 100)
         {
             playerHealth = 100;
         }
-        SceneManager.LoadScene("Home");
+        
         bar.SetHealth((int)playerHealth);
     }
 
