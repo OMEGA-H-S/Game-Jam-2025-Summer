@@ -433,6 +433,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2edd0285404f7c6478a048c303d92c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1765915590 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2380650257468396700, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+  m_PrefabInstance: {fileID: 858855919500378708}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1977938557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -441,6 +452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1946954900952007992, guid: 22103087c0b9f4746a5c060588625744, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3278592538892212839, guid: 22103087c0b9f4746a5c060588625744, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.1766171
@@ -496,6 +511,10 @@ PrefabInstance:
     - target: {fileID: 5120984359424214172, guid: 22103087c0b9f4746a5c060588625744, type: 3}
       propertyPath: m_Name
       value: frog temp enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5120984359424214172, guid: 22103087c0b9f4746a5c060588625744, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5251034422546445617, guid: 22103087c0b9f4746a5c060588625744, type: 3}
       propertyPath: healthBar
@@ -554,6 +573,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 841262673685323671, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: bar
+      value: 
+      objectReference: {fileID: 1765915589}
     - target: {fileID: 2602046735412831623, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.68102
@@ -619,6 +642,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1263719050}
     m_Modifications:
+    - target: {fileID: 3246172533160828949, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: slider
+      value: 
+      objectReference: {fileID: 1765915590}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.16
+      objectReference: {fileID: 0}
     - target: {fileID: 7609934110819671879, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
       propertyPath: m_Name
       value: Canvas
