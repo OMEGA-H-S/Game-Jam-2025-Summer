@@ -13,7 +13,7 @@ public class PortalController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Called once");
+        //Debug.Log("Called once");
         animator = GetComponent<Animator>();
         if(levelNum != -1)
         {

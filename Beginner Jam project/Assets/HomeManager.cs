@@ -31,7 +31,7 @@ public class HomeManager : MonoBehaviour
         completeLevels = new bool[numLevels];
         for(int i = 0; i < completeLevels.Length; i++)
         {
-            Debug.Log("Resseting");
+            //Debug.Log("Resseting");
             completeLevels[i] = false;
         }
     }

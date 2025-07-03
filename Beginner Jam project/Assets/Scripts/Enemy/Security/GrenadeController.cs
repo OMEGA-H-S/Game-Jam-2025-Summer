@@ -59,4 +59,11 @@ public class GrenadeController : MonoBehaviour
         //Instantiate a separate game object that will just explode (using unity animation)
         GameObject.Destroy(this.gameObject);
     }
+
+    private void aboutToExplode()
+    {
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().simulated = false;
+        transform.localScale = new Vector3(8, 8, 8);
+    }
 }

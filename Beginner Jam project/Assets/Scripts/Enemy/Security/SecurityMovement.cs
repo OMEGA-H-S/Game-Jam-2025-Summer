@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEditor.FilePathAttribute;
 
@@ -55,7 +56,8 @@ public class SecurityMovement : MonoBehaviour
     {
         Easy, 
         Medium, 
-        Hard
+        Hard, 
+        Boss
     };
 
     [SerializeField] Difficulty guardDifficulty;
@@ -65,6 +67,8 @@ public class SecurityMovement : MonoBehaviour
     private Vector2 originalColliderOffset;
     [SerializeField] private Vector2 chargeColliderSize;
     [SerializeField] private Vector2 chargeColliderOffset;
+
+    private string color;
 
 
 
@@ -83,22 +87,24 @@ public class SecurityMovement : MonoBehaviour
         if(guardDifficulty == Difficulty.Easy)
         {
             radius = 4f;
-            targetDistance = 18;
+            targetDistance = 22f;
             speed = 2f;
             jumpHeight = 18f;
             dodgeFreq = 0.25f;
             attackDelay = 1.5f;
+            color = "Green";
             anim.SetTrigger("Green");
             StartCoroutine(armAnimationDelay("Green"));
         }
         if(guardDifficulty == Difficulty.Medium)
         {
             this.radius = 7f;
-            targetDistance = 18f;
+            targetDistance = 22f;
             speed = 4.92f;
             jumpHeight = 18f;
             dodgeFreq = 0.45f;
             attackDelay = 1f;
+            color = "Blue";
             anim.SetTrigger("Blue");
             StartCoroutine(armAnimationDelay("Blue"));
 
@@ -111,7 +117,18 @@ public class SecurityMovement : MonoBehaviour
             jumpHeight = 22f;
             dodgeFreq = 0.85f;
             attackDelay = 0.8f;
+            color = "Red";
+        }
 
+        else
+        {
+            this.radius = 15f;
+            targetDistance = 22f;
+            speed = 7f;
+            jumpHeight = 25f;
+            dodgeFreq = 1f;
+            attackDelay = 0.7f;
+            color = "Red";
         }
 
         
@@ -154,6 +171,7 @@ public class SecurityMovement : MonoBehaviour
                         cooldownTime += Time.deltaTime;
                         anim.SetBool("isWalking", false);
                         gunPivot.gameObject.SetActive(true);
+                        gunAnim.SetTrigger(color);
                     }
                 }
                 if(Vector2.Distance(this.transform.position, player.position) < targetDistance)
@@ -162,6 +180,7 @@ public class SecurityMovement : MonoBehaviour
                     isAttacking = false;
                     playerFound();
                     gunPivot.gameObject.SetActive(true);
+                    gunAnim.SetTrigger(color);
                     rb.velocity = Vector2.zero;
                     //Debug.Log("I see the player, so i set my velocity to " + rb.velocity);
                     anim.SetBool("isWalking", false);
@@ -217,7 +236,7 @@ public class SecurityMovement : MonoBehaviour
     {
         float multiplier = Mathf.Abs(transform.localScale.x) / transform.localScale.x;
         RaycastHit2D wallDetect = Physics2D.BoxCast((Vector2)collider.bounds.center + new Vector2(collider.bounds.size.x, 0) * multiplier, collider.bounds.size, 0, Vector2.down, 0.2f, groundLayer);
-        Debug.Log("wall detect: " + wallDetect.collider != null);
+        //Debug.Log("wall detect: " + wallDetect.collider != null);
         return wallDetect.collider == null;
     }
     private void playerFound()
@@ -311,7 +330,7 @@ public class SecurityMovement : MonoBehaviour
 
     private void attack()
     {
-        Debug.Log("Looks like im attacking again");
+        //Debug.Log("Looks like im attacking again");
         if(Random.Range(0f, 1f) < dodgeFreq)
         {
             dodgeAttack();
@@ -373,6 +392,7 @@ public class SecurityMovement : MonoBehaviour
         anim.SetBool("throwingGrenade", false);
         isAttacking = false;
         gunPivot.gameObject.SetActive(true);
+        gunAnim.SetTrigger(color);
     }
 
     private IEnumerator chargeAttack()
@@ -382,6 +402,7 @@ public class SecurityMovement : MonoBehaviour
 
         collider.size = chargeColliderSize;
         collider.offset = chargeColliderOffset;
+        transform.localScale = transform.localScale * 0.9f;
         //Debug.Log("Here!");
 
         gunPivot.gameObject.SetActive(false);
@@ -417,7 +438,7 @@ public class SecurityMovement : MonoBehaviour
                 doneChargeAttack = true;
             }
 
-            if (holeInFront())
+            if (holeInFront() && isGrounded())
             {
                 doneChargeAttack = true;
             }
@@ -460,10 +481,13 @@ public class SecurityMovement : MonoBehaviour
         //yield return new WaitForSeconds(2);
 
         gunPivot.gameObject.SetActive(true);
+        gunAnim.SetTrigger(color);
         Debug.Log("Charge attack finished");
         anim.SetBool("isCharging", false);
         collider.size = originalColliderSize;
         collider.offset = originalColliderOffset;
+        transform.localScale = transform.localScale / 0.9f;
+
         yield return new WaitForSeconds(2 * attackDelay);
         isAttacking = false;
         
