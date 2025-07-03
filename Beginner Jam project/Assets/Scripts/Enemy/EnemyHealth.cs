@@ -32,7 +32,7 @@ public class EnemyHealth : MonoBehaviour
         else
         {
             color = "Boss";
-            enemyHealth = 100;
+            enemyHealth = 80;
         }
 
         anim = GetComponent<Animator>();
