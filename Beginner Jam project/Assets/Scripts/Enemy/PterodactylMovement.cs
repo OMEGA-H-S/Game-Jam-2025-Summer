@@ -166,13 +166,16 @@ public class PterodactylMovement : MonoBehaviour
     {
         if (collision.gameObject.layer == 8)
         {
-            GetComponentInChildren<EnemyHealth>().enemyAttacked(8f);
             currentHealth = currentHealth - 10f;
 
             GetComponentInChildren<HealthBar>().SetHealth((int)(currentHealth));
+            Debug.Log(currentHealth);
 
             if (currentHealth == 0)
+            {
                 SoundEffectsManager.instance.PlaySoundEffectClip(deathSound, transform, 0.5f);
+                Destroy(gameObject);
+            }
             else
                 SoundEffectsManager.instance.PlaySoundEffectClip(damageSound, transform, 0.5f);
         }

@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
     public float moveSpeed = 0.5f;
     public float changeDirectionTime = 2f;
     public LayerMask visionMask;
-
+    public Animator animator;
     private float timer;
     private int direction; // -1 = left, 1 = right
     private Rigidbody2D rb;
@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour
 
             // Apply movement
             rb.velocity = new Vector2(direction * moveSpeed, rb.velocity.y);
+            animator.SetFloat("Speed", Mathf.Abs(moveSpeed));
 
             // Flip by scaling
             if (direction < 0 && transform.localScale.x > 0)
@@ -48,8 +49,10 @@ public class Movement : MonoBehaviour
         else
         {
             rb.velocity = new Vector2(0f, rb.velocity.y);
+            animator.SetFloat("Speed", Mathf.Abs(0));
+
         }
-        
+
     }
 
     void PickNewDirection()
@@ -60,10 +63,18 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 dir = transform.localScale.x < 0 ? Vector2.left : Vector2.right;
         Vector2 origin = transform.position;
-        RaycastHit2D ray = Physics2D.Raycast(origin, dir, 10f, visionMask);
-        
+        Vector2 size = new Vector2(4f, 1f); // width x height of the box
+        Vector2 dir = transform.localScale.x < 0 ? Vector2.left : Vector2.right;
+        float distance = 8f;
+
+        RaycastHit2D ray = Physics2D.BoxCast(origin, size, 0f, dir, distance, visionMask);
+
+        // Debug visualization
+        Debug.DrawLine(origin + new Vector2(-size.x / 2, -size.y / 2), origin + new Vector2(-size.x / 2, size.y / 2), Color.yellow);
+        Debug.DrawLine(origin + new Vector2(size.x / 2, -size.y / 2), origin + new Vector2(size.x / 2, size.y / 2), Color.yellow);
+        Debug.DrawRay(origin, dir * distance, Color.red); // cast direction
+
         Debug.DrawRay(origin, dir * 10f, Color.red);
         if (ray.collider != null)
         {

@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 8567062680511495594}
   - component: {fileID: 6761473369879038492}
   - component: {fileID: 1569368803132568163}
-  - component: {fileID: 6913891165832755530}
   m_Layer: 0
   m_Name: PterodactylEasy
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +57,7 @@ MonoBehaviour:
   diveScreech: {fileID: 8300000, guid: a9a599b5cc83e184a83c52497c049f53, type: 3}
   flapSound: {fileID: 8300000, guid: 4d8692d9c00cbbd49b2c348eaea05988, type: 3}
   damageSound: {fileID: 8300000, guid: 87a22c7bd349ab34ab52fcedabbd6e15, type: 3}
-  deathSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: aeb4118b47604604094c0c6ee5f21363, type: 3}
   damageTaken: 10
   maxHealth: 100
   attackError: 0.2
@@ -141,18 +140,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.13463709, y: -0.33232492}
   m_Size: {x: 4.789723, y: 1.5161128}
   m_Direction: 1
---- !u!114 &6913891165832755530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3754583187467849567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fb31b4a3f8a4cb49b1e29208b13d28a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4555347085603553608
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,6 +326,10 @@ PrefabInstance:
     - target: {fileID: 4613594537110072182, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
       propertyPath: m_Color.r
       value: 0.49034896
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747736551373507712, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7609934110819671879, guid: b1ef761f5031c3a4e8e9f778b3e50471, type: 3}
       propertyPath: m_Name
