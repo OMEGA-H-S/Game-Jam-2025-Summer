@@ -6,6 +6,8 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     [SerializeField] private int doorCode;
+    [SerializeField] private AudioClip opening;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,7 @@ public class DoorController : MonoBehaviour
             PlayerCollectibles player = collision.gameObject.GetComponent<PlayerCollectibles>();
             if(player.hasCode(this.doorCode))
             {
+                SoundEffectsManager.instance.PlaySoundEffectClip(opening, transform, 0.2f);
                 this.openDoor();
             }
         }

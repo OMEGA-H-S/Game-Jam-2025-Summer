@@ -219,6 +219,7 @@ MonoBehaviour:
   crouchSize: {x: 1.653803, y: 1.736479}
   standingSize: {x: 1.009531, y: 3.168197}
   walkingSound: {fileID: 0}
+  jumpSound: {fileID: 8300000, guid: 2e1f0e0e1def0324f982c9e92b42c0f8, type: 3}
 --- !u!114 &2113879181978114689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac92369ddea007c45a24e12e63464dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyCollected: {fileID: 8300000, guid: bbef68ff9b7054442aff49695fb977c2, type: 3}
 --- !u!114 &841262673685323671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,6 +247,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armAnimator: {fileID: 5935555646830296880}
   bar: {fileID: 0}
+  damage: {fileID: 8300000, guid: e220ccde9b1740b49b12b56b13fbe072, type: 3}
+  death: {fileID: 8300000, guid: 1a0fb9df1deaa3543892e713c7043165, type: 3}
 --- !u!95 &9140697174889869593
 Animator:
   serializedVersion: 5
