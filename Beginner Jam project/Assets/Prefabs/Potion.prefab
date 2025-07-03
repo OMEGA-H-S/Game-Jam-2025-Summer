@@ -101,7 +101,6 @@ MonoBehaviour:
   numInDirection: 10
   timeBetweenMovement: 0.01
   keyCode: 0
-  collected: {fileID: 8300000, guid: 959c279d0c1b65f49890b1d6b8216d00, type: 3}
 --- !u!60 &4507853474783259987
 PolygonCollider2D:
   m_ObjectHideFlags: 0
