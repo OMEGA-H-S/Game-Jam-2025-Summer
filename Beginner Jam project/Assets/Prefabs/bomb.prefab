@@ -166,6 +166,8 @@ MonoBehaviour:
   throwStrength: 0.7
   grenadeHeight: 30.5
   blastRadius: 12
+  explosion: {fileID: 8300000, guid: c259a7944f7095940910a858c510a1ae, type: 3}
+  deploy: {fileID: 8300000, guid: 33cb3bb03d0837f4cbfaaa66f195a866, type: 3}
 --- !u!95 &6830018145468805731
 Animator:
   serializedVersion: 5
