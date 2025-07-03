@@ -379,6 +379,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 16093710}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &459078104 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3151626827593910844, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+  m_PrefabInstance: {fileID: 815541403}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &500281099
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +647,19 @@ PrefabInstance:
     - target: {fileID: 841262673685323671, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: bar
       value: 
-      objectReference: {fileID: 1987891405}
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239013481493012813, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: loop
+      value: 
+      objectReference: {fileID: 8300000, guid: b752484b37de6914d987a1e1fb3ad76f, type: 3}
+    - target: {fileID: 2239013481493012813, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: intro
+      value: 
+      objectReference: {fileID: 8300000, guid: 2fb1fc7f9d4592a46ba7c6f98989f672, type: 3}
+    - target: {fileID: 2239013481493012813, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 459078104}
     - target: {fileID: 2602046735412831623, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.4
@@ -683,6 +700,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3151626827593910844, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2fb1fc7f9d4592a46ba7c6f98989f672, type: 3}
     - target: {fileID: 7187566607241313002, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3203,17 +3224,6 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
---- !u!114 &1987891405 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3246172533160828949, guid: 30fd9b54c049cb447bce4b106ebfdd7f, type: 3}
-  m_PrefabInstance: {fileID: 1108418483}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a226f9a047fd4f4baf15b60c2e320d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2049028096
 GameObject:
   m_ObjectHideFlags: 0

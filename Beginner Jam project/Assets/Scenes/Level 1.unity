@@ -7266,6 +7266,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3997739c0f1b31047b936ba25889049c, type: 3}
+--- !u!82 &991607956 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3151626827593910844, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+  m_PrefabInstance: {fileID: 1001078880}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1001078880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7278,6 +7283,18 @@ PrefabInstance:
       propertyPath: bar
       value: 
       objectReference: {fileID: 397433855}
+    - target: {fileID: 2239013481493012813, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: loop
+      value: 
+      objectReference: {fileID: 8300000, guid: bd5b6389d555a254f9951dd2f339865b, type: 3}
+    - target: {fileID: 2239013481493012813, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: intro
+      value: 
+      objectReference: {fileID: 8300000, guid: 665f0a12595d5c94f90e471a713fbde3, type: 3}
+    - target: {fileID: 2239013481493012813, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 991607956}
     - target: {fileID: 2602046735412831623, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.7
