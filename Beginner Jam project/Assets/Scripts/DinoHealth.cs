@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class DinoHealth : MonoBehaviour
 {
-    public int maxHealth = 10;
+    public int maxHealth = 20;
     private int currentHealth;
-
+    public HealthBar healthBar;
     void Start()
     {
         currentHealth = maxHealth;
+        healthBar.SetMaxHealth(currentHealth);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(5);
+        }
+    }
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
+        healthBar.SetHealth(currentHealth);
         Debug.Log("Dino took damage. Health = " + currentHealth);
 
         if (currentHealth <= 0)
