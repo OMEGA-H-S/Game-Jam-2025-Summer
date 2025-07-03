@@ -211,10 +211,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
-    - target: {fileID: 3502038941015258501, guid: c89d47863d916934bbc804893533aee0, type: 3}
-      propertyPath: guardDifficulty
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6065096767315727566, guid: c89d47863d916934bbc804893533aee0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.02
@@ -2566,14 +2562,6 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 3151626827593910844, guid: 9963d82ddc69fa84aa45f18a6d3320a5, type: 3}
   m_PrefabInstance: {fileID: 97642853}
   m_PrefabAsset: {fileID: 0}
-
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2edd0285404f7c6478a048c303d92c7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-
 --- !u!1001 &1902361331
 PrefabInstance:
   m_ObjectHideFlags: 0
